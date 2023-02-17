@@ -31,8 +31,12 @@ void RobotContainer::ConfigureBindings() {
   m_driverController.B().WhileTrue(frc2::InstantCommand([this]{m_arm.setArm(0.0);}).ToPtr());
   // m_driverController.X().WhileTrue(frc2::InstantCommand([this]{m_arm.setArm(-0.1);}).ToPtr());
 
-  m_driverController.A().WhileTrue(frc2::InstantCommand([this]{m_arm.setPosition(1400);}).ToPtr());
-  m_driverController.X().WhileTrue(frc2::InstantCommand([this]{m_arm.setPosition(54000);}).ToPtr());
+  m_driverController.A().WhileTrue(frc2::InstantCommand([this]{m_arm.setPosition(-35000);}).ToPtr());
+  m_driverController.X().WhileTrue(frc2::InstantCommand([this]{m_arm.setPosition(9215);}).ToPtr());
+
+  m_driverController.Y().WhileTrue(frc2::InstantCommand([this]{m_arm.calibrateArm();}).ToPtr());
+
+  
 
 
 

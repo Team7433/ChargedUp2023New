@@ -4,6 +4,8 @@
 
 #include "commands/DriveWithJoystick.h"
 
+using namespace JoystickDriveConstants;
+
 DriveWithJoystick::DriveWithJoystick(SwerveDrivetrain* swerveDriveTrain, frc::Joystick* joystick) {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(swerveDriveTrain);
@@ -22,7 +24,7 @@ void DriveWithJoystick::Execute() {
   // std::cout << -m_joystick->GetDirectionRadians() << std::endl;
   // m_swerveDrivetrain->setOutput(m_joystick->GetMagnitude()*0.1);
 
-  m_swerveDrivetrain->Drive(units::radian_t(-m_joystick->GetDirectionRadians()), units::meter_t(m_joystick->GetMagnitude()), m_joystick->GetZ(), 0_rad);
+  m_swerveDrivetrain->Drive(units::radian_t(-m_joystick->GetDirectionRadians()), units::meter_t(m_joystick->GetMagnitude()) * kJoyStickDampen, m_joystick->GetZ() * 0.2, 0_rad);
 
 
 }

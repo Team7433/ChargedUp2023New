@@ -9,7 +9,7 @@ Arm::Arm(){
     m_armMotorTwo->SetNeutralMode(NeutralMode::Brake);
     m_armMotorTwo->Follow(*m_armMotorOne);
 
-    m_armMotorOne->Config_kP(0, 0.1, 10);
+    m_armMotorOne->Config_kP(0, 0.003, 10);
     m_armMotorOne->Config_kI(0, 0, 10);
     m_armMotorOne->Config_kD(0, 0, 10);
 
@@ -18,8 +18,8 @@ Arm::Arm(){
 
 // This method will be called once per scheduler run
 void Arm::Periodic() {
-    frc::SmartDashboard::PutNumber("ArmOne", m_armMotorOne->GetSelectedSensorPosition());
-    frc::SmartDashboard::PutNumber("ArmTwo", m_armMotorTwo->GetSelectedSensorPosition());
+    frc::SmartDashboard::PutNumber("ArmPos", m_armMotorOne->GetSelectedSensorPosition());
+    frc::SmartDashboard::PutNumber("ArmAngle", getAngle());
 
 
 }

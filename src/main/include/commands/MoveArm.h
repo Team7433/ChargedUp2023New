@@ -7,10 +7,7 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 
-
-#include <subsystems/SwerveDrivetrain.h>
-#include <frc/Joystick.h>
-#include "Constants.h"
+#include "subsystems/Arm.h"
 
 /**
  * An example command.
@@ -19,10 +16,10 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class DriveWithJoystick
-    : public frc2::CommandHelper<frc2::CommandBase, DriveWithJoystick> {
+class MoveArm
+    : public frc2::CommandHelper<frc2::CommandBase, MoveArm> {
  public:
-  DriveWithJoystick(SwerveDrivetrain* swerveDriveTrain, frc::Joystick* joystick);
+  MoveArm(double angle, Arm*arm);
 
   void Initialize() override;
 
@@ -32,11 +29,6 @@ class DriveWithJoystick
 
   bool IsFinished() override;
 
-
- private:
-
-  SwerveDrivetrain* m_swerveDrivetrain;
-  frc::Joystick* m_joystick;
-
-
+  private:
+    Arm* m_arm;
 };

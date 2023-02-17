@@ -28,6 +28,13 @@ namespace DriveTrainConstants {
     constexpr double kEncoderOffsetFR = 353.3;
     constexpr double kEncoderOffsetFL = 177.81;
 
+}
 
+namespace JoystickDriveConstants {
+    constexpr double kJoyStickDampen = 0.5;
+}
 
+namespace ArmConstants {
+    constexpr unsigned int kArmMotorOne = 5;
+    constexpr unsigned int kArmMotorTwo = 10;
 }
