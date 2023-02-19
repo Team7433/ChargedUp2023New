@@ -37,4 +37,7 @@ namespace JoystickDriveConstants {
 namespace ArmConstants {
     constexpr unsigned int kArmMotorOne = 5;
     constexpr unsigned int kArmMotorTwo = 10;
+
+    constexpr unsigned int kLimitSwitchID = 0; // Configure this
+    constexpr unsigned int kArmEncoderRange = 20000; // Configure this
 }

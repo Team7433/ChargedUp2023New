@@ -6,6 +6,7 @@
 
 #include <frc2/command/SubsystemBase.h>
 #include <ctre/Phoenix.h>
+#include <frc/DigitalInput.h>
 #include "Constants.h"
 
 using namespace ArmConstants;
@@ -20,10 +21,13 @@ class Arm : public frc2::SubsystemBase {
   void setPosition(double pos){m_armMotorOne->Set(ControlMode::Position, pos);}
   double getPosition(){return m_armMotorOne->GetSelectedSensorPosition();}
 
-  void setAngle(double angle){}
-  double getAngle(){return getPosition()*encoderTicksPerDegree;}
+  void setAngle(double angle){} // Still gotta think about foolproof logic
+  double getAngle(){}
 
-  void calibrateArm(){}
+  void calibrateArm(){
+    if (! m_limitSwitch.Get()){
+      m_armMotorOne->SetSelectedSensorPosition(kArmEncoderRange/2); // Setting arm to vertical position
+  }}
 
   
 
@@ -38,8 +42,7 @@ class Arm : public frc2::SubsystemBase {
   WPI_TalonFX * m_armMotorOne = new WPI_TalonFX{kArmMotorOne};
   WPI_TalonFX * m_armMotorTwo = new WPI_TalonFX{kArmMotorTwo};
 
-  
+  frc::DigitalInput m_limitSwitch{kLimitSwitchID};
 
-  double encoderTicksPerDegree = -267.71;
   
 };
