@@ -13,7 +13,8 @@ class Gyro : public frc2::SubsystemBase {
  public:
   Gyro();
 
-  double GetRotation(){return -gyro.GetYaw();}
+  double GetRotation() {return -gyro.GetYaw();}
+  double GetRotationChange() {return -gyro.GetRate();}
   void Reset(){gyro.Reset(); std::cout << "gyro reset!!!" << std::endl;}
   /**
    * Will be called periodically whenever the CommandScheduler runs.

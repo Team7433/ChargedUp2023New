@@ -139,7 +139,7 @@ moduleInfo SwerveModule::getInfo() {
     info.pivotMotorOutput = m_pivotMotor->GetMotorOutputPercent();
 
     //fill data on module velocity
-    info.driveSpeed = units::meters_per_second_t(m_driveMotor->GetSelectedSensorVelocity()/(k_setupInfo.kencoderPerM*10));
+    info.driveSpeed = units::meters_per_second_t((m_driveMotor->GetSelectedSensorVelocity()*10)/k_setupInfo.kencoderPerM);
     
     //fill data  on the heading angle from both encoder, absolute and falcon motor
     info.headingAngle_a = units::degree_t(m_absEncoder->GetAbsolutePosition());
@@ -185,7 +185,7 @@ Vector2D SwerveModule::getDirection() {
 
     moduleInfo tempInfo = getInfo();
 
-    Vector2D directionVector{units::radian_t(tempInfo.headingAngle_e.to<double>()*(M_PI)/(180)), units::meter_t(tempInfo.driveSpeed.to<double>())};
+    Vector2D directionVector{units::radian_t(tempInfo.headingAngle_e.to<double>()*(M_PI/180)), units::meter_t(tempInfo.driveSpeed.to<double>())};
     return directionVector;
 
 }

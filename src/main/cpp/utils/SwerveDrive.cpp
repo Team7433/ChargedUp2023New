@@ -92,13 +92,13 @@ void SwerveDrive::DisplayData() const {
 
 }
 
-void SwerveDrive::updateOdometry(units::radian_t currentGyroAngle) {
+void SwerveDrive::updateOdometry(units::radians_per_second_t angularSpeed) {
 
-    units::radian_t deltaAngle{currentGyroAngle - m_previousAngle};
+    // units::radian_t deltaAngle{currentGyroAngle - m_previousAngle};
 
-    m_previousAngle = currentGyroAngle;
+    // m_previousAngle = currentGyroAngle;
 
-    units::radians_per_second_t angularSpeed = deltaAngle/20_ms;
+    // units::radians_per_second_t angularSpeed = deltaAngle/20_ms;
 
     // Vector2D* summedVector = m_moduleBL->getDirection() + m_moduleBR->getDirection();
     // summedVector = *summedVector + m_moduleFL->getDirection();
@@ -109,7 +109,7 @@ void SwerveDrive::updateOdometry(units::radian_t currentGyroAngle) {
 
     Vector2D* summedVector = m_moduleFR->getDirection() - FrontRightTang;
 
-    summedVector->setDirection(summedVector->getDirection() - currentGyroAngle);
+    // summedVector->setDirection(summedVector->getDirection() - currentGyroAngle);
 
     std::cout << "Direction: " << summedVector->getDirection().to<double>()*180/M_PI << " Speed: " << summedVector->getMagnitude().to<double>() << std::endl;
 

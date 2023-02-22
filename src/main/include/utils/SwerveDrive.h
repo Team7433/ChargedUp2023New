@@ -33,7 +33,7 @@ namespace iona {
         // Display Data on all swerve modules and on swerve drive
         void DisplayData() const;
 
-        void updateOdometry(units::radian_t currentGyroAngle);
+        void updateOdometry(units::radians_per_second_t changeInRotation);
         
      private:
         //perform pythag to find the hypotenuse length
@@ -53,7 +53,7 @@ namespace iona {
         //physical measurements of where the modules are located on the drive base
         const units::meter_t m_trackWidth;
         const units::meter_t m_wheelBase;
-        const units::meter_t m_radius{units::meter_t(pythagFindHypot(m_trackWidth.to<double>(), m_wheelBase.to<double>()))};
+        const units::meter_t m_radius{units::meter_t(pythagFindHypot(m_trackWidth.to<double>()/2, m_wheelBase.to<double>()/2))};
 
         //stored vector that gets applies to the swerve modules
         std::map<std::string, Vector2D*> outputVector{{"FrontLeft", nullptr}, {"FrontRight", nullptr}, {"BackLeft", nullptr}, {"BackRight", nullptr}};
