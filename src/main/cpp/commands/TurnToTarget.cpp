@@ -51,6 +51,7 @@ void TurnToTarget::End(bool interrupted) {}
 // Returns true when the command should end.
 bool TurnToTarget::IsFinished() {
   if (units::degree_t(fabs(getCLosestError(m_gyroTarget).to<double>())) < 2_deg){return true;}
+  return false;
 }
 
 units::degree_t TurnToTarget::getCLosestError(units::degree_t targetGyroAngle) {

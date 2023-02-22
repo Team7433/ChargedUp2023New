@@ -33,7 +33,7 @@ namespace iona {
         // Display Data on all swerve modules and on swerve drive
         void DisplayData() const;
 
-        void updateOdometry();
+        void updateOdometry(units::radian_t currentGyroAngle);
         
      private:
         //perform pythag to find the hypotenuse length
@@ -64,6 +64,7 @@ namespace iona {
         //coordinate for odometry
         coordinate m_currentPosition{.x_pos=0_m, .y_pos=0_m};
 
+        units::radian_t m_previousAngle{0_rad};
        
 
     };

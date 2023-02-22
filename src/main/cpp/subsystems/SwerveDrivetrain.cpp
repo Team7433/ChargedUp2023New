@@ -10,12 +10,12 @@ SwerveDrivetrain::SwerveDrivetrain(Gyro* gyro){
 
 // This method will be called once per scheduler run
 void SwerveDrivetrain::Periodic() {
-    // m_swerveDrive->updateOdometry();
+    m_swerveDrive->updateOdometry(units::degree_t(m_gyro->GetRotation()));
     // m_swerveModuleFR->displayModuleData();
     // m_swerveModuleFL->displayModuleData();
     // m_swerveModuleBR->displayModuleData();
     // m_swerveModuleBL->displayModuleData();
-    // m_swerveDrive->DisplayData();
+    m_swerveDrive->DisplayData();
 }
 
 
