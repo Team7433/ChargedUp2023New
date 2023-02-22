@@ -86,6 +86,23 @@ void SwerveDrive::DisplayData() const {
     m_moduleFL->displayModuleData();
     m_moduleBL->displayModuleData();
     m_moduleBR->displayModuleData();
+
+    frc::SmartDashboard::PutNumber("xCoordinate", m_currentPosition.x_pos.to<double>());
+    frc::SmartDashboard::PutNumber("yCoordinate", m_currentPosition.y_pos.to<double>());
+
+}
+
+void SwerveDrive::updateOdometry() {
+
+    Vector2D* summedVector = m_moduleBL->getDirection() + m_moduleBR->getDirection();
+    summedVector = *summedVector + m_moduleFL->getDirection();
+    summedVector = *summedVector + m_moduleFR->getDirection();
+
+    // std::cout << "Direction: " << summedVector->getDirection().to<double>() << " Speed: " << summedVector->getMagnitude().to<double>() << std::endl;
+
+    m_currentPosition.x_pos = units::meter_t(summedVector->getX().to<double>()*0.02) + m_currentPosition.x_pos;
+    m_currentPosition.y_pos = units::meter_t(summedVector->getY().to<double>()*0.02) + m_currentPosition.y_pos;
+
 }
 
 

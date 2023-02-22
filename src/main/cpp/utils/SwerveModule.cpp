@@ -101,7 +101,7 @@ void SwerveModule::Set(units::radian_t heading) {
     if(fabs(m_driveMotor->GetMotorOutputPercent()) <= k_setupInfo.kOutputDeadzone) return;
 
     //checks if there has been encoder drift/encoder init error from motor
-    encoderDriftCheck();
+    // encoderDriftCheck();
 
     //Calculate the error from current to the target heading
     units::radian_t error = heading - units::degree_t(remainder(m_pivotMotor->GetSelectedSensorPosition()/ k_setupInfo.kEncoderPerDegree , 360));
@@ -139,17 +139,18 @@ moduleInfo SwerveModule::getInfo() {
     info.pivotMotorOutput = m_pivotMotor->GetMotorOutputPercent();
 
     //fill data on module velocity
-    info.driveSpeed = units::meters_per_second_t(m_driveMotor->GetSelectedSensorVelocity()/k_setupInfo.kEncoderPerDegree);
+    info.driveSpeed = units::meters_per_second_t(m_driveMotor->GetSelectedSensorVelocity()/(k_setupInfo.kencoderPerM*10));
     
     //fill data  on the heading angle from both encoder, absolute and falcon motor
     info.headingAngle_a = units::degree_t(m_absEncoder->GetAbsolutePosition());
-    info.headingAngle_e = units::degree_t(remainder(m_pivotMotor->GetSelectedSensorPosition()/k_setupInfo.kEncoderPerDegree, 360));
     
     if(m_pivotMotor->GetControlMode() == ctre::phoenix::motorcontrol::ControlMode::Position) {
     //fill data on target encoder count
+        info.headingAngle_e = units::degree_t(remainder(m_pivotMotor->GetSelectedSensorPosition()/k_setupInfo.kEncoderPerDegree, 360));
         info.targetAngleEncoderC = m_pivotMotor->GetClosedLoopTarget();
     } else {
         info.targetAngleEncoderC = 0;
+        info.headingAngle_e = 0_deg;
     }
     //if drive motor is in velocity control then add info about its status
     if(m_driveMotor->GetControlMode() == ctre::phoenix::motorcontrol::ControlMode::Velocity) {
@@ -178,8 +179,18 @@ void SwerveModule::displayModuleData() {
     frc::SmartDashboard::PutNumber("SwerveDrive/" + m_moduleName + "/TargetAngleEncoderCount", info.targetAngleEncoderC);
     frc::SmartDashboard::PutNumber("SwerveDrive/" + m_moduleName + "/TargetDriveEncoderVel", info.targetDriveEncoderVel);
 
+}
 
+Vector2D SwerveModule::getDirection() {
 
+    moduleInfo tempInfo = getInfo();
+
+    Vector2D directionVector{units::radian_t(tempInfo.headingAngle_e.to<double>()*(M_PI)/(180)), units::meter_t(tempInfo.driveSpeed.to<double>())};
+    return directionVector;
 
 }
+
+
+
+
 

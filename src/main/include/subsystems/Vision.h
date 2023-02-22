@@ -5,16 +5,22 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
-#include <AHRS.h>
-#include <frc/SPI.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <networktables/NetworkTable.h>
+#include <networktables/NetworkTableInstance.h>
+#include <units/angle.h>
 #include <iostream>
 
-class Gyro : public frc2::SubsystemBase {
- public:
-  Gyro();
 
-  double GetRotation(){return -gyro.GetYaw();}
-  void Reset(){gyro.Reset(); std::cout << "gyro reset!!!" << std::endl;}
+class Vision : public frc2::SubsystemBase {
+ public:
+  Vision();
+  units::degree_t getTargetOffsetX(){ return units::degree_t(table->GetNumber("tx", 0.0));}
+  bool getTargetVisible() {return table->GetNumber("tv", 0.0);}
+  bool getTXUpToDate() {return true;}
+
+  
+
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
@@ -23,6 +29,5 @@ class Gyro : public frc2::SubsystemBase {
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-
-  AHRS gyro{frc::SPI::Port::kMXP};
+  std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
 };

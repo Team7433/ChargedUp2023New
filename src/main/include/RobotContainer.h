@@ -12,12 +12,15 @@
 #include "subsystems/Compressor.h"
 #include "subsystems/Gyro.h"
 #include "subsystems/SwerveDrivetrain.h"
+#include "subsystems/Vision.h"
 
 
 #include "Constants.h"
 #include "subsystems/ExampleSubsystem.h"
 #include "commands/DriveWithJoystick.h"
-#include "commands/MoveArm.h"
+#include "commands/TurnToTarget.h"
+#include "commands/JoystickArmControl.h"
+
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -36,6 +39,8 @@ class RobotContainer {
     m_compressor.setCompressorOn(state);
   }
 
+  
+
  private:
   // Replace with CommandPS4Controller or CommandJoystick if needed
   frc2::CommandXboxController m_driverController{0};
@@ -47,9 +52,10 @@ class RobotContainer {
   Arm m_arm;
   Compressor m_compressor;
   SwerveDrivetrain m_swerveDrive;
-  
-  
   Gyro m_gyro;
+  Vision m_vision;
+  
+  
 
   void ConfigureBindings();
 };

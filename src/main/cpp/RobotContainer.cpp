@@ -10,9 +10,10 @@
 #include "commands/ExampleCommand.h"
 #include <frc2/command/InstantCommand.h>
 
-RobotContainer::RobotContainer(){
+RobotContainer::RobotContainer() : m_swerveDrive(&m_gyro){
   // Initialize all of your commands and subsystems here
-m_swerveDrive.SetDefaultCommand(DriveWithJoystick(&m_swerveDrive, &m_joystick));
+  m_swerveDrive.SetDefaultCommand(DriveWithJoystick(&m_swerveDrive, &m_joystick));
+  m_arm.SetDefaultCommand(JoystickArmControl(&m_arm, &m_driverController));
   // Configure the button bindings
   ConfigureBindings();
 }
@@ -21,24 +22,24 @@ void RobotContainer::ConfigureBindings() {
   // Configure your trigger bindings here
 
   // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-  // frc2::Trigger([this] {
-  //   return m_subsystem.ExampleCondition();
-  // }).OnTrue(ExampleCommand(&m_subsystem).ToPtr());
+  frc2::Trigger([this] {
+    return m_joystick.GetRawButton(2);
+  }).OnTrue(frc2::InstantCommand([this]{m_gyro.Reset();}).ToPtr());
+
+  frc2::Trigger([this]{
+    return m_joystick.GetRawButton(1);
+  }).OnTrue(TurnToTarget(&m_swerveDrive, &m_gyro, &m_vision).ToPtr());
+
+  // frc2::Trigger([this]{return m_driverController.GetRawButton(8);}).OnTrue(TurnToTarget(&m_swerveDrive, &m_gyro, &m_vision).ToPtr());
 
   // Schedule `ExampleMethodCommand` when the Xbox controller's B button is
   // pressed, cancelling on release.
-  // m_driverController.A().WhileTrue(frc2::InstantCommand([this]{m_arm.setArm(0.1);}).ToPtr());
-  m_driverController.B().WhileTrue(frc2::InstantCommand([this]{m_arm.setArm(0.0);}).ToPtr());
-  // m_driverController.X().WhileTrue(frc2::InstantCommand([this]{m_arm.setArm(-0.1);}).ToPtr());
 
-  m_driverController.A().WhileTrue(frc2::InstantCommand([this]{m_arm.setPosition(-35000);}).ToPtr());
-  m_driverController.X().WhileTrue(frc2::InstantCommand([this]{m_arm.setPosition(9215);}).ToPtr());
-
-  m_driverController.Y().WhileTrue(frc2::InstantCommand([this]{m_arm.calibrateArm();}).ToPtr());
-
+  m_driverController.A().WhileTrue(frc2::InstantCommand([this]{m_arm.extendArm(frc::DoubleSolenoid::Value::kForward);}).ToPtr());
+  m_driverController.Y().WhileTrue(frc2::InstantCommand([this]{m_arm.extendArm(frc::DoubleSolenoid::Value::kReverse);}).ToPtr());
   
 
-
+  m_driverController.X().WhileTrue(frc2::InstantCommand([this]{m_arm.setPosition(m_arm.getPosition());}).ToPtr());
 
 
   m_driverController.RightBumper().WhileTrue(frc2::InstantCommand([this]{m_claw.setClaw(frc::DoubleSolenoid::kForward);}).ToPtr());

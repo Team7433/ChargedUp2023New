@@ -30,6 +30,16 @@ namespace DriveTrainConstants {
 
 }
 
+namespace SwerveDriveConstants {
+    static constexpr double kJoystickRotateDeadZone{0.25};
+    static constexpr double kJoystickStrafeDeadZone{0.15};
+    static constexpr double kJoystickForwardDeadZone{0.15};
+
+    static constexpr double kStrafeMultiplier{1.85};
+    static constexpr double kForwardMultiplier{1.85};
+    static constexpr double kRotateMultiplier{1.25};
+}
+
 namespace JoystickDriveConstants {
     constexpr double kJoyStickDampen = 0.5;
 }

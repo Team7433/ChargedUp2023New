@@ -2,12 +2,11 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-#include "subsystems/Gyro.h"
+#include "subsystems/Vision.h"
 
-Gyro::Gyro() = default;
+Vision::Vision() = default;
 
 // This method will be called once per scheduler run
-void Gyro::Periodic() {
-
-    std::cout << GetRotation() << std::endl;
+void Vision::Periodic() {
+    frc::SmartDashboard::PutNumber("XOffset", getTargetOffsetX().to<double>());
 }

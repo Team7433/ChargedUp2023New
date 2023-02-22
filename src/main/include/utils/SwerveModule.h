@@ -11,6 +11,8 @@
 #include <units/velocity.h>
 #include <units/math.h>
 #include <units/acceleration.h>
+#include <utils/Vector2D.h>
+
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
@@ -76,7 +78,7 @@ namespace iona {
         //display module info onto smartdashboard
         void displayModuleData();
      
-     
+        Vector2D getDirection();
      
      private:
         

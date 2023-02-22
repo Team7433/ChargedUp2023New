@@ -8,6 +8,7 @@
 #include <ctre/Phoenix.h>
 #include <frc/DigitalInput.h>
 #include "Constants.h"
+#include <frc/DoubleSolenoid.h>
 
 using namespace ArmConstants;
 
@@ -21,8 +22,10 @@ class Arm : public frc2::SubsystemBase {
   void setPosition(double pos){m_armMotorOne->Set(ControlMode::Position, pos);}
   double getPosition(){return m_armMotorOne->GetSelectedSensorPosition();}
 
+  void extendArm(frc::DoubleSolenoid::Value val){extensionSolenoid.Set(val);}
+
   void setAngle(double angle){} // Still gotta think about foolproof logic
-  double getAngle(){}
+  // double getAngle(){}
 
   void calibrateArm(){
     if (! m_limitSwitch.Get()){
@@ -43,6 +46,7 @@ class Arm : public frc2::SubsystemBase {
   WPI_TalonFX * m_armMotorTwo = new WPI_TalonFX{kArmMotorTwo};
 
   frc::DigitalInput m_limitSwitch{kLimitSwitchID};
+  frc::DoubleSolenoid extensionSolenoid{frc::PneumaticsModuleType::CTREPCM, 5, 1};
 
   
 };

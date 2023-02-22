@@ -16,6 +16,11 @@
 
 namespace iona {
 
+    struct coordinate {
+        units::meter_t x_pos;
+        units::meter_t y_pos;
+    };
+
     class SwerveDrive {
      public:
         SwerveDrive(SwerveModule* TopLeftModule, SwerveModule* TopRightModule, SwerveModule* BottomLeftModule, SwerveModule* BottomRightModule, units::meter_t trackWidth, units::meter_t wheelBase);
@@ -26,7 +31,9 @@ namespace iona {
         //drive with a given vector for move direction
         void Drive(Vector2D MoveDirection, double rotationValue, units::radian_t gyroAngle);
         // Display Data on all swerve modules and on swerve drive
-        void DisplayData() const; 
+        void DisplayData() const;
+
+        void updateOdometry();
         
      private:
         //perform pythag to find the hypotenuse length
@@ -53,8 +60,13 @@ namespace iona {
 
         //If the swerve modules are set to velocity driving mode
         bool m_velocityDrive{false};
+
+        //coordinate for odometry
+        coordinate m_currentPosition{.x_pos=0_m, .y_pos=0_m};
+
        
 
     };
+    
     
 }

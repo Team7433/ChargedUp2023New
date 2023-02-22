@@ -4,23 +4,25 @@
 
 #include "subsystems/SwerveDrivetrain.h"
 
-SwerveDrivetrain::SwerveDrivetrain() = default;
+SwerveDrivetrain::SwerveDrivetrain(Gyro* gyro){
+    m_gyro = gyro;
+}
 
 // This method will be called once per scheduler run
 void SwerveDrivetrain::Periodic() {
-
-    m_swerveModuleFR->displayModuleData();
-    m_swerveModuleFL->displayModuleData();
-    m_swerveModuleBR->displayModuleData();
-    m_swerveModuleBL->displayModuleData();
-
+    // m_swerveDrive->updateOdometry();
+    // m_swerveModuleFR->displayModuleData();
+    // m_swerveModuleFL->displayModuleData();
+    // m_swerveModuleBR->displayModuleData();
+    // m_swerveModuleBL->displayModuleData();
+    // m_swerveDrive->DisplayData();
 }
 
 
 void SwerveDrivetrain::Drive(units::radian_t direction, units::meter_t magnitude, double rotation, units::radian_t gyroAngle) {
     iona::Vector2D directionVec(direction, magnitude);
 
-    m_swerveDrive->Drive(directionVec, rotation, units::degree_t(m_gyro->GetFusedHeading()));
-    std::cout << m_gyro->GetFusedHeading() << std::endl;
+    m_swerveDrive->Drive(directionVec, rotation, units::degree_t(m_gyro->GetRotation()));
+    //std::cout << units::degree_t(->GetRotation() << std::endl;
 }
 
