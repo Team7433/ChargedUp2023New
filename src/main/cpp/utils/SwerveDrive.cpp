@@ -6,6 +6,27 @@ SwerveDrive::SwerveDrive(SwerveModule* TopLeftModule, SwerveModule* TopRightModu
 
 }
 
+tangentVectors SwerveDrive::getTangentVectors(units::meter_t magnitude) {
+
+    //IMPORTANT LOGIC REFERENCE
+    //logic assumes unit circle starts at zero, counter clock wise is positive and 0 is in the direction of travel positively
+    //create the vectors that are tangent to the circle that the 4 swerve modules sit on for each swerve module
+    
+    Vector2D FrontLeftTang{units::math::atan2(m_trackWidth/2, m_wheelBase/2) + 90_deg, units::meter_t(magnitude)};
+
+    Vector2D FrontRightTang{units::math::atan2(-m_trackWidth/2, m_wheelBase/2) + 90_deg, units::meter_t(magnitude)};
+
+    Vector2D BottomLeftTang{units::math::atan2(m_trackWidth/2, -m_wheelBase/2) + 90_deg, units::meter_t(magnitude)};
+
+    Vector2D BottomRightTang{units::math::atan2(-m_trackWidth/2, -m_wheelBase/2) + 90_deg, units::meter_t(magnitude)};
+
+    //create tangetVectors struct to be prepared to be returned
+    tangentVectors vectors{.FrontLeft = FrontLeftTang, .FrontRight = FrontRightTang, .BackLeft = BottomLeftTang, .BackRight = BottomRightTang};
+
+    return vectors;
+}
+
+
 void SwerveDrive::Drive(double FWD, double STR, double rotationValue, units::radian_t gyroAngle) {
     Vector2D direction{units::meter_t(FWD), units::meter_t(STR)};
 
@@ -92,6 +113,17 @@ void SwerveDrive::DisplayData() const {
 
 }
 
+
+units::second_t SwerveDrive::getDeltaTime() {
+
+    m_timer.Stop();
+    units::second_t timePassed = m_timer.Get();
+    m_timer.Reset();
+    m_timer.Start();
+    return timePassed;
+}
+
+
 void SwerveDrive::updateOdometry(units::radians_per_second_t angularSpeed, units::radian_t currentGyroAngle) {
 
     // units::radian_t deltaAngle{currentGyroAngle - m_previousAngle};
@@ -100,44 +132,63 @@ void SwerveDrive::updateOdometry(units::radians_per_second_t angularSpeed, units
 
     // units::radians_per_second_t angularSpeed = deltaAngle/20_ms;
 
-    // Vector2D* summedVector = m_moduleBL->getDirection() + m_moduleBR->getDirection();
-    // summedVector = *summedVector + m_moduleFL->getDirection();
-    // summedVector = *summedVector + m_moduleFR->getDirection();
 
-    Vector2D FrontLeftTang{units::math::atan2(m_trackWidth/2, m_wheelBase/2) + 90_deg, units::meter_t(angularSpeed.to<double>()*m_radius.to<double>())};
-
-    Vector2D FrontRightTang{units::math::atan2(-m_trackWidth/2, m_wheelBase/2) + 90_deg, units::meter_t(angularSpeed.to<double>()*m_radius.to<double>())};
-
-    Vector2D BottomLeftTang{units::math::atan2(m_trackWidth/2, -m_wheelBase/2) + 90_deg, units::meter_t(angularSpeed.to<double>()*m_radius.to<double>())};
-
-    Vector2D BottomRightTang{units::math::atan2(-m_trackWidth/2, -m_wheelBase/2) + 90_deg, units::meter_t(angularSpeed.to<double>()*m_radius.to<double>())};
+  
 
 
+    // Vector2D FrontLeftTang{units::math::atan2(m_trackWidth/2, m_wheelBase/2) + 90_deg, units::meter_t(angularSpeed.to<double>()*m_radius.to<double>())};
+
+    // Vector2D FrontRightTang{units::math::atan2(-m_trackWidth/2, m_wheelBase/2) + 90_deg, units::meter_t(angularSpeed.to<double>()*m_radius.to<double>())};
+
+    // Vector2D BottomLeftTang{units::math::atan2(m_trackWidth/2, -m_wheelBase/2) + 90_deg, units::meter_t(angularSpeed.to<double>()*m_radius.to<double>())};
+
+    // Vector2D BottomRightTang{units::math::atan2(-m_trackWidth/2, -m_wheelBase/2) + 90_deg, units::meter_t(angularSpeed.to<double>()*m_radius.to<double>())};
 
 
-    Vector2D* summedVectorFR = m_moduleFR->getDirection() - FrontRightTang;
-    Vector2D* summedVectorFL = m_moduleFL->getDirection() - FrontLeftTang;
-    Vector2D* summedVectorBR = m_moduleBR->getDirection() - BottomRightTang;
-    Vector2D* summedVectorBL = m_moduleBL->getDirection() - BottomLeftTang;
+    //create a struct that holds all the vectors that are tangent to the drive base and have a magnitude of the rotational velocity given by the gyro
+    tangentVectors rotationalTangentVectors = getTangentVectors(units::meter_t(angularSpeed.to<double>()*m_radius.to<double>()));
 
+    // Vector2D* summedVectorFR = m_moduleFR->getDirection() - FrontRightTang;
+    // Vector2D* summedVectorFL = m_moduleFL->getDirection() - FrontLeftTang;
+    // Vector2D* summedVectorBR = m_moduleBR->getDirection() - BottomRightTang;
+    // Vector2D* summedVectorBL = m_moduleBL->getDirection() - BottomLeftTang;
+
+    Vector2D* summedVectorFR = m_moduleFR->getDirection() - rotationalTangentVectors.FrontRight;
+    Vector2D* summedVectorFL = m_moduleFL->getDirection() - rotationalTangentVectors.FrontLeft;
+    Vector2D* summedVectorBR = m_moduleBR->getDirection() - rotationalTangentVectors.BackLeft;
+    Vector2D* summedVectorBL = m_moduleBL->getDirection() - rotationalTangentVectors.BackRight;
+
+    //find the average of the direction and velocity vector
     units::radian_t averageDirection = (summedVectorFR->getDirection() + summedVectorFL->getDirection() + summedVectorBR->getDirection() + summedVectorBL->getDirection())/4;
     units::meter_t averageVelocity = (summedVectorFR->getMagnitude() + summedVectorFL->getMagnitude() + summedVectorBR->getMagnitude() + summedVectorBL->getMagnitude())/4;
     
-    Vector2D* summedVector = new Vector2D(averageDirection, averageVelocity);
+    // delete vector pointers
+    delete summedVectorFR;
+    delete summedVectorFL;
+    delete summedVectorBL;
+    delete summedVectorBR;
+
+    Vector2D* travelVelocity = new Vector2D(averageDirection, averageVelocity);
+
     // std::cout << "angular Speed : " << angularSpeed.to<double>()*(180/M_PI) << std::endl;
     // std::cout << "Direction Tang: " << FrontRightTang.getDirection().to<double>()*(180/M_PI) << " Direction Velocity: " << m_moduleFR->getDirection().getDirection().to<double>()*(180/M_PI) << std::endl;
+    // std::cout << "Magnitude Tang: " << FrontRightTang.getMagnitude().to<double>() << " Velocity Magnitude: " << m_moduleFR->getDirection().getMagnitude().to<double>() << std::endl;
 
-    std::cout << "Magnitude Tang: " << FrontRightTang.getMagnitude().to<double>() << " Velocity Magnitude: " << m_moduleFR->getDirection().getMagnitude().to<double>() << std::endl;
-
-
-    summedVector->setDirection(summedVector->getDirection() + currentGyroAngle);
+    //offsets the travel direction vector by the current gyro angle to allow for field orientated x and y movement otherwise its robot relative
+    travelVelocity->setDirection(travelVelocity->getDirection() + currentGyroAngle);
 
     // std::cout << "Direction of Travel: " << summedVector->getDirection().to<double>()*(180/M_PI) << " Speed of travel: " << summedVector->getMagnitude().to<double>() << std::endl;
 
     // std::cout << "Direction: " << summedVector->getDirection().to<double>()*180/M_PI << " Speed: " << summedVector->getMagnitude().to<double>() << std::endl;
 
-    m_currentPosition.x_pos = units::meter_t(summedVector->getX().to<double>()*0.02) + m_currentPosition.x_pos;
-    m_currentPosition.y_pos = units::meter_t(summedVector->getY().to<double>()*0.02) + m_currentPosition.y_pos;
+    units::second_t deltaTime = getDeltaTime();
+
+    //add the change in position to the current position
+    // m_currentPosition.x_pos = units::meter_t(travelVelocity->getX().to<double>()*0.02) + m_currentPosition.x_pos;
+    // m_currentPosition.y_pos = units::meter_t(travelVelocity->getY().to<double>()*0.02) + m_currentPosition.y_pos;
+
+    m_currentPosition.x_pos = units::meter_t(travelVelocity->getX().to<double>()*deltaTime.to<double>()) + m_currentPosition.x_pos;
+    m_currentPosition.y_pos = units::meter_t(travelVelocity->getY().to<double>()*deltaTime.to<double>()) + m_currentPosition.y_pos;
 
 }
 

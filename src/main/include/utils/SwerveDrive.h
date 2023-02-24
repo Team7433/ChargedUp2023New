@@ -4,6 +4,8 @@
 
 #include "utils/Vector2D.h"
 
+#include <frc/Timer.h>
+
 #include <units/length.h>
 #include <units/angle.h>
 #include <units/angular_acceleration.h>
@@ -19,6 +21,15 @@ namespace iona {
     struct coordinate {
         units::meter_t x_pos;
         units::meter_t y_pos;
+    };
+
+    struct tangentVectors {
+
+        Vector2D FrontLeft;
+        Vector2D FrontRight;
+        Vector2D BackLeft;
+        Vector2D BackRight;
+
     };
 
     class SwerveDrive {
@@ -44,6 +55,10 @@ namespace iona {
         void UpdateMotorValues();
         //deletes the old output vectors stored
         void deleteOldOutputVecs();
+        //find tangent vectors to the drivetrain with a given magnitude
+        tangentVectors getTangentVectors(units::meter_t magnitude);
+        //returns the delta time from the last time this function have been called
+        units::second_t getDeltaTime();
 
 
         //pointers to the swerve modules
@@ -63,8 +78,10 @@ namespace iona {
         //If the swerve modules are set to velocity driving mode
         bool m_velocityDrive{false};
 
-        //coordinate for odometry
+        //current coordinate for odometry
         coordinate m_currentPosition{.x_pos=0_m, .y_pos=0_m};
+
+        frc::Timer m_timer;
 
         units::radian_t m_previousAngle{0_rad};
        
