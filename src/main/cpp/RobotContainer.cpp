@@ -28,7 +28,8 @@ void RobotContainer::ConfigureBindings() {
 
   frc2::Trigger([this]{
     return m_joystick.GetRawButton(1);
-  }).OnTrue(TurnToTarget(&m_swerveDrive, &m_gyro, &m_vision).ToPtr());
+  }).OnTrue(AutoTarget(&m_swerveDrive, &m_gyro, &m_vision, &m_joystick, &m_controller).ToPtr());
+
 
   // frc2::Trigger([this]{return m_driverController.GetRawButton(8);}).OnTrue(TurnToTarget(&m_swerveDrive, &m_gyro, &m_vision).ToPtr());
 
@@ -37,6 +38,7 @@ void RobotContainer::ConfigureBindings() {
 
   m_driverController.A().WhileTrue(frc2::InstantCommand([this]{m_arm.extendArm(frc::DoubleSolenoid::Value::kForward);}).ToPtr());
   m_driverController.Y().WhileTrue(frc2::InstantCommand([this]{m_arm.extendArm(frc::DoubleSolenoid::Value::kReverse);}).ToPtr());
+
   
 
   m_driverController.Start().WhileTrue(HoldArm(&m_arm, &m_controller).ToPtr());

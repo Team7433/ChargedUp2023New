@@ -62,7 +62,7 @@ void AutoTarget::Execute() {
 //   }
   // std::cout << "error: " << m_error.to<double>() << " output: " << rotate << std::endl;
   //telling swerveDrive Controller to drive with the above outputs
-  m_swerveDrive->Drive(units::radian_t(-m_joystick->GetDirectionRadians()), units::meter_t(m_joystick->GetMagnitude()) , rotate, 0_rad);
+  m_swerveDrive->Drive(units::radian_t(-m_joystick->GetDirectionRadians()), units::meter_t(m_joystick->GetMagnitude()) , rotate, units::radian_t(m_gyro->GetRotation()));
 }
 
 // Called once the command ends or is interrupted.
@@ -74,7 +74,7 @@ void AutoTarget::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool AutoTarget::IsFinished() {
-  return m_done;
+  return !(m_joystick->GetRawButton(1));
 }
 
 units::degree_t AutoTarget::getCLosestError(units::degree_t targetGyroAngle) {

@@ -22,6 +22,7 @@
 #include "commands/TurnToTarget.h"
 #include "commands/JoystickArmControl.h"
 #include "commands/HoldArm.h"
+#include "commands/AutoTarget.h"
 
 
 /**
