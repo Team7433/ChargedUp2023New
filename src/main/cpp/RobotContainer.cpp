@@ -13,7 +13,7 @@
 RobotContainer::RobotContainer() : m_swerveDrive(&m_gyro){
   // Initialize all of your commands and subsystems here
   m_swerveDrive.SetDefaultCommand(DriveWithJoystick(&m_swerveDrive, &m_joystick));
-  // m_arm.SetDefaultCommand(JoystickArmControl(&m_arm, &m_driverController));
+  m_arm.SetDefaultCommand(JoystickArmControl(&m_arm, &m_driverController));
   // Configure the button bindings
   ConfigureBindings();
 }
@@ -24,7 +24,7 @@ void RobotContainer::ConfigureBindings() {
   // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
   frc2::Trigger([this] {
     return m_joystick.GetRawButton(2);
-  }).OnTrue(frc2::InstantCommand([this]{m_gyro.Reset();}).ToPtr());
+  }).OnTrue(frc2::InstantCommand([this]{m_gyro.Reset(); m_swerveDrive.ResetOdometry();}).ToPtr());
 
   frc2::Trigger([this]{
     return m_joystick.GetRawButton(1);
@@ -39,9 +39,9 @@ void RobotContainer::ConfigureBindings() {
   m_driverController.Y().WhileTrue(frc2::InstantCommand([this]{m_arm.extendArm(frc::DoubleSolenoid::Value::kReverse);}).ToPtr());
   
 
-  m_driverController.Start().WhileTrue(frc2::InstantCommand([this]{m_arm.setPosition(m_arm.getPosition());}).ToPtr());
-  m_driverController.X().WhileTrue(frc2::InstantCommand([this]{m_arm.setPosition(m_arm.getTargetPos()-2000);}).ToPtr());
-  m_driverController.B().WhileTrue(frc2::InstantCommand([this]{m_arm.setPosition(m_arm.getTargetPos()+2000);}).ToPtr());
+  m_driverController.Start().WhileTrue(HoldArm(&m_arm, &m_controller).ToPtr());
+  // m_driverController.X().WhileTrue(frc2::InstantCommand([this]{m_arm.setPosition(m_arm.getTargetPos()-2000);}).ToPtr());
+  // m_driverController.B().WhileTrue(frc2::InstantCommand([this]{m_arm.setPosition(m_arm.getTargetPos()+2000);}).ToPtr());
   // m_driverController.B().WhileTrue(frc2::InstantCommand([this]{m_arm.setArm(0.0);}).ToPtr());
 
 

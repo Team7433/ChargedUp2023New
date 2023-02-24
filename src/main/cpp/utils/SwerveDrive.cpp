@@ -92,7 +92,7 @@ void SwerveDrive::DisplayData() const {
 
 }
 
-void SwerveDrive::updateOdometry(units::radians_per_second_t angularSpeed) {
+void SwerveDrive::updateOdometry(units::radians_per_second_t angularSpeed, units::radian_t currentGyroAngle) {
 
     // units::radian_t deltaAngle{currentGyroAngle - m_previousAngle};
 
@@ -104,14 +104,37 @@ void SwerveDrive::updateOdometry(units::radians_per_second_t angularSpeed) {
     // summedVector = *summedVector + m_moduleFL->getDirection();
     // summedVector = *summedVector + m_moduleFR->getDirection();
 
+    Vector2D FrontLeftTang{units::math::atan2(m_trackWidth/2, m_wheelBase/2) + 90_deg, units::meter_t(angularSpeed.to<double>()*m_radius.to<double>())};
 
     Vector2D FrontRightTang{units::math::atan2(-m_trackWidth/2, m_wheelBase/2) + 90_deg, units::meter_t(angularSpeed.to<double>()*m_radius.to<double>())};
 
-    Vector2D* summedVector = m_moduleFR->getDirection() - FrontRightTang;
+    Vector2D BottomLeftTang{units::math::atan2(m_trackWidth/2, -m_wheelBase/2) + 90_deg, units::meter_t(angularSpeed.to<double>()*m_radius.to<double>())};
 
-    // summedVector->setDirection(summedVector->getDirection() - currentGyroAngle);
+    Vector2D BottomRightTang{units::math::atan2(-m_trackWidth/2, -m_wheelBase/2) + 90_deg, units::meter_t(angularSpeed.to<double>()*m_radius.to<double>())};
 
-    std::cout << "Direction: " << summedVector->getDirection().to<double>()*180/M_PI << " Speed: " << summedVector->getMagnitude().to<double>() << std::endl;
+
+
+
+    Vector2D* summedVectorFR = m_moduleFR->getDirection() - FrontRightTang;
+    Vector2D* summedVectorFL = m_moduleFL->getDirection() - FrontLeftTang;
+    Vector2D* summedVectorBR = m_moduleBR->getDirection() - BottomRightTang;
+    Vector2D* summedVectorBL = m_moduleBL->getDirection() - BottomLeftTang;
+
+    units::radian_t averageDirection = (summedVectorFR->getDirection() + summedVectorFL->getDirection() + summedVectorBR->getDirection() + summedVectorBL->getDirection())/4;
+    units::meter_t averageVelocity = (summedVectorFR->getMagnitude() + summedVectorFL->getMagnitude() + summedVectorBR->getMagnitude() + summedVectorBL->getMagnitude())/4;
+    
+    Vector2D* summedVector = new Vector2D(averageDirection, averageVelocity);
+    // std::cout << "angular Speed : " << angularSpeed.to<double>()*(180/M_PI) << std::endl;
+    // std::cout << "Direction Tang: " << FrontRightTang.getDirection().to<double>()*(180/M_PI) << " Direction Velocity: " << m_moduleFR->getDirection().getDirection().to<double>()*(180/M_PI) << std::endl;
+
+    std::cout << "Magnitude Tang: " << FrontRightTang.getMagnitude().to<double>() << " Velocity Magnitude: " << m_moduleFR->getDirection().getMagnitude().to<double>() << std::endl;
+
+
+    summedVector->setDirection(summedVector->getDirection() + currentGyroAngle);
+
+    // std::cout << "Direction of Travel: " << summedVector->getDirection().to<double>()*(180/M_PI) << " Speed of travel: " << summedVector->getMagnitude().to<double>() << std::endl;
+
+    // std::cout << "Direction: " << summedVector->getDirection().to<double>()*180/M_PI << " Speed: " << summedVector->getMagnitude().to<double>() << std::endl;
 
     m_currentPosition.x_pos = units::meter_t(summedVector->getX().to<double>()*0.02) + m_currentPosition.x_pos;
     m_currentPosition.y_pos = units::meter_t(summedVector->getY().to<double>()*0.02) + m_currentPosition.y_pos;

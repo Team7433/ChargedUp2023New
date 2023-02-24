@@ -18,9 +18,9 @@ Arm::Arm(){
 // This method will be called once per scheduler run
 void Arm::Periodic() {
     frc::SmartDashboard::PutNumber("ArmPos", m_armMotorOne->GetSelectedSensorPosition());
-    frc::SmartDashboard::PutNumber("ArmTraj", m_armMotorOne->GetClosedLoopTarget());
-    frc::SmartDashboard::PutNumber("ArmError", m_armMotorOne->GetClosedLoopError());
-    std::cout << m_armMotorOne->GetMotorOutputPercent()<< std::endl;
+    // frc::SmartDashboard::PutNumber("ArmTraj", m_armMotorOne->GetClosedLoopTarget());
+    // frc::SmartDashboard::PutNumber("ArmError", m_armMotorOne->GetClosedLoopError());
+    // std::cout << m_armMotorOne->GetMotorOutputPercent()<< std::endl;
     // frc::SmartDashboard::PutNumber("ArmAngle", getAngle());
 
 

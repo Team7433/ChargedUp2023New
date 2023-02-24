@@ -6,6 +6,7 @@
 
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/button/CommandXboxController.h>
+#include <frc/XboxController.h>
 
 #include "subsystems/Arm.h"
 #include "subsystems/Claw.h"
@@ -20,6 +21,7 @@
 #include "commands/DriveWithJoystick.h"
 #include "commands/TurnToTarget.h"
 #include "commands/JoystickArmControl.h"
+#include "commands/HoldArm.h"
 
 
 /**
@@ -45,6 +47,7 @@ class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   frc2::CommandXboxController m_driverController{0};
   frc::Joystick m_joystick{1};
+  frc::XboxController m_controller{0};
 
   // The robot's subsystems are defined here...
   ExampleSubsystem m_subsystem;

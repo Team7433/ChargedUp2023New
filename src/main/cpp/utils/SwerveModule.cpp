@@ -69,7 +69,7 @@ void SwerveModule::Set(double output) {
 units::radian_t SwerveModule::outputInversion(units::radian_t error) {
     //Absolute value of the error
     double ABSerror = units::math::fabs(error).to<double>();
-        
+    
     //if the error is more that 90 Deg and less than 270 Deg, meaning it is the other side then flip the wheel turn direction
     if(ABSerror > M_PI/2 && ABSerror < 3*M_PI/2) {
         m_outputInversion = -1; // flip the drive direction

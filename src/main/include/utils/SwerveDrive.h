@@ -32,9 +32,11 @@ namespace iona {
         void Drive(Vector2D MoveDirection, double rotationValue, units::radian_t gyroAngle);
         // Display Data on all swerve modules and on swerve drive
         void DisplayData() const;
-
-        void updateOdometry(units::radians_per_second_t changeInRotation);
+        //update the current odometry
+        void updateOdometry(units::radians_per_second_t changeInRotation, units::radian_t currentGyroAngle);
         
+        void resetOdometryCoordinate() {m_currentPosition.x_pos = 0_m; m_currentPosition.y_pos = 0_m;}
+
      private:
         //perform pythag to find the hypotenuse length
         double pythagFindHypot(double x, double y) {return sqrt( pow(x, 2) + pow(y, 2) );};

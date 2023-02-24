@@ -30,6 +30,8 @@ class SwerveDrivetrain : public frc2::SubsystemBase {
   void Periodic() override;
   void Drive(units::radian_t direction, units::meter_t magnitude, double rotation, units::radian_t gyroAngle);
 
+  void ResetOdometry() {m_swerveDrive->resetOdometryCoordinate();}
+
   // void SetupDriveTo(units::meters_per_second_t maxVelocity, units::meters_per_second_squared_t acceleration, units::radians_per_second_t maxRotateSpeed, units::radians_per_second_squared_t rotAcceleration);
   // void SetDriveTarget(units::meter_t targetX, units::meter_t targetY, units::radian_t targetZ);
 
