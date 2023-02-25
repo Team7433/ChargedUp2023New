@@ -108,8 +108,8 @@ void SwerveDrive::DisplayData() const {
     m_moduleBL->displayModuleData();
     m_moduleBR->displayModuleData();
 
-    frc::SmartDashboard::PutNumber("xCoordinate", m_currentPosition.x_pos.to<double>());
-    frc::SmartDashboard::PutNumber("yCoordinate", m_currentPosition.y_pos.to<double>());
+    frc::SmartDashboard::PutNumber("SwerveDrive/xCoordinate", m_currentPosition.x_pos.to<double>());
+    frc::SmartDashboard::PutNumber("SwerveDrive/yCoordinate", m_currentPosition.y_pos.to<double>());
 
 }
 
@@ -131,10 +131,6 @@ void SwerveDrive::updateOdometry(units::radians_per_second_t angularSpeed, units
     // m_previousAngle = currentGyroAngle;
 
     // units::radians_per_second_t angularSpeed = deltaAngle/20_ms;
-
-
-  
-
 
     // Vector2D FrontLeftTang{units::math::atan2(m_trackWidth/2, m_wheelBase/2) + 90_deg, units::meter_t(angularSpeed.to<double>()*m_radius.to<double>())};
 
