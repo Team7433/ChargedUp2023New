@@ -42,6 +42,7 @@ namespace iona {
 
         std::string moduleName; // name given to the module
         
+
         units::meters_per_second_t driveSpeed; //speed of the module
         double driveMotorOutput; //percentage output on motor
 
@@ -50,6 +51,9 @@ namespace iona {
 
         double targetAngleEncoderC; //target encoder count for angle
         double targetDriveEncoderVel; // target drive encoder velocity
+
+        double targetEnocoderAngle;
+
 
         double pivotMotorOutput; // percentage output on pivot motor
 
@@ -112,7 +116,7 @@ namespace iona {
 
 
         //PID values for swerve module
-        std::map<std::string, double> m_PID_P{{"P", 0.215}, {"I", 0.0}, {"D", 0.1}}; // pivot motor PID values
+        std::map<std::string, double> m_PID_P{{"P", 0.220}, {"I", 0.0007}, {"D", 0.1}}; // pivot motor PID values
         std::map<std::string, double> m_PID_D{{"P", 0.13}, {"I", 0.0007}, {"D", 0.19}, {"F", (1023.0)/21797}}; // drive motor PID values
 
         //Falcon Motors

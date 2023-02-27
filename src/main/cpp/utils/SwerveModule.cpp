@@ -139,7 +139,7 @@ moduleInfo SwerveModule::getInfo() {
     info.pivotMotorOutput = m_pivotMotor->GetMotorOutputPercent();
 
     //fill data on module velocity
-    info.driveSpeed = units::meters_per_second_t((m_driveMotor->GetSelectedSensorVelocity()*10)/k_setupInfo.kencoderPerM);
+    info.driveSpeed = units::meters_per_second_t(((m_driveMotor->GetSelectedSensorVelocity())*10)/k_setupInfo.kencoderPerM);
     
     //fill data  on the heading angle from both encoder, absolute and falcon motor
     info.headingAngle_a = units::degree_t(m_absEncoder->GetAbsolutePosition());
@@ -148,9 +148,11 @@ moduleInfo SwerveModule::getInfo() {
     //fill data on target encoder count
         info.headingAngle_e = units::degree_t(remainder(m_pivotMotor->GetSelectedSensorPosition()/k_setupInfo.kEncoderPerDegree, 360));
         info.targetAngleEncoderC = m_pivotMotor->GetClosedLoopTarget();
+        info.targetEnocoderAngle = remainder(m_pivotMotor->GetClosedLoopTarget()/k_setupInfo.kEncoderPerDegree, 360);
     } else {
         info.targetAngleEncoderC = 0;
         info.headingAngle_e = 0_deg;
+        info.targetEnocoderAngle = 0;
     }
     //if drive motor is in velocity control then add info about its status
     if(m_driveMotor->GetControlMode() == ctre::phoenix::motorcontrol::ControlMode::Velocity) {
@@ -174,11 +176,11 @@ void SwerveModule::displayModuleData() {
 
     frc::SmartDashboard::PutNumber("SwerveDrive/" + m_moduleName + "/MotorEncoderHeadingAngle", info.headingAngle_e.to<double>());
     frc::SmartDashboard::PutNumber("SwerveDrive/" + m_moduleName + "/AbsoluteHeadingAngle", info.headingAngle_a.to<double>());
-    
+    frc::SmartDashboard::PutNumber("SwerveDrive/" + m_moduleName + "/TargetClosedLoopAngle", info.targetEnocoderAngle);
 
     frc::SmartDashboard::PutNumber("SwerveDrive/" + m_moduleName + "/TargetAngleEncoderCount", info.targetAngleEncoderC);
     frc::SmartDashboard::PutNumber("SwerveDrive/" + m_moduleName + "/TargetDriveEncoderVel", info.targetDriveEncoderVel);
-
+    frc::SmartDashboard::PutNumber("SwerveDrive/" + m_moduleName + "/pivotEncoderError", m_pivotMotor->GetClosedLoopError());
 }
 
 Vector2D SwerveModule::getDirection() {
