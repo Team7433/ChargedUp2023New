@@ -45,6 +45,8 @@ namespace iona {
         void DisplayData() const;
         //update the current odometry
         void updateOdometry(units::radians_per_second_t changeInRotation, units::radian_t currentGyroAngle);
+
+        coordinate getOdometryCoordinate() const {return m_currentPosition;}
         
         void resetOdometryCoordinate() {m_currentPosition.x_pos = 0_m; m_currentPosition.y_pos = 0_m;}
 

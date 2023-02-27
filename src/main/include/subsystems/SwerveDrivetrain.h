@@ -10,6 +10,8 @@
 #include "utils/Vector2D.h"
 #include "utils/SwerveDrive.h"
 #include "subsystems/Gyro.h"
+
+#include <ctre/Phoenix.h>
 // #include <frc/geometry/Translation2d.h>
 // #include <frc/kinematics/SwerveDriveOdometry.h>
 // #include <frc/kinematics/SwerveDriveKinematics.h>
@@ -32,6 +34,8 @@ class SwerveDrivetrain : public frc2::SubsystemBase {
 
   void ResetOdometry() {m_swerveDrive->resetOdometryCoordinate();}
 
+  iona::coordinate getOdometryCoordinate() const {return m_swerveDrive->getOdometryCoordinate();}
+
   // void SetupDriveTo(units::meters_per_second_t maxVelocity, units::meters_per_second_squared_t acceleration, units::radians_per_second_t maxRotateSpeed, units::radians_per_second_squared_t rotAcceleration);
   // void SetDriveTarget(units::meter_t targetX, units::meter_t targetY, units::radian_t targetZ);
 
@@ -42,9 +46,11 @@ class SwerveDrivetrain : public frc2::SubsystemBase {
   // declared private and exposed only through public methods.
 
   //Swerve module settings
-  iona::moduleSetup swerveModuleSettings{.kEncoderPerDegree = (2048*12.8)/360.0, .kOutputDeadzone = 0.05, .kInvertPivotEncoder = true, .kWheelCircumference = 0.2892_m, .kencoderPerM = (2048.0*(6.75))/0.2892};
+  //old wheel circumference 0.2892_m
+  iona::moduleSetup swerveModuleSettings{.kEncoderPerDegree = (2048*12.8)/360.0, .kOutputDeadzone = 0.05, .kInvertPivotEncoder = true, .kWheelCircumference = 0.31919_m, .kencoderPerM = (2048.0*(6.75))/0.31919};
   
-  units::meter_t const kWheelBase = 548.6_mm;
+
+  units::meter_t const kWheelBase = 546.1_mm;
   units::meter_t const kTrackWidth = 596.9_mm;
 
   units::meter_t halveWheelBase = kWheelBase/2;
@@ -57,12 +63,8 @@ class SwerveDrivetrain : public frc2::SubsystemBase {
 
   iona::SwerveDrive* m_swerveDrive = new iona::SwerveDrive(m_swerveModuleFL, m_swerveModuleFR, m_swerveModuleBL, m_swerveModuleBR, kTrackWidth, kWheelBase);
 
-  // std::map<std::string, frc::Translation2d> m_translations{{"TopRight", frc::Translation2d{halveTrackWidth, halveWheelBase}}, {"TopLeft", frc::Translation2d{-halveTrackWidth, halveWheelBase}}, {"BottomLeft", frc::Translation2d{-halveTrackWidth, -halveWheelBase}}, {"BottomRight", frc::Translation2d{halveTrackWidth, -halveWheelBase}}};
-
-  // frc::SwerveDriveKinematics<4> m_kinematics{m_translations["TopLeft"], m_translations["TopRight"], m_translations["BottomLeft"], m_translations["BottomRight"]};
-
-  // frc::SwerveDriveOdometry<4> m_odometry(m_kinematics);
-
+  PigeonIMU* m_gyro2 = new PigeonIMU{50};
+  
 
   Gyro* m_gyro;
 

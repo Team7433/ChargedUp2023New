@@ -11,6 +11,7 @@ SwerveDrivetrain::SwerveDrivetrain(Gyro* gyro){
 // This method will be called once per scheduler run
 void SwerveDrivetrain::Periodic() {
     m_swerveDrive->updateOdometry(units::radians_per_second_t(m_gyro->GetRotationChange()), units::radian_t(m_gyro->GetRotation()*(M_PI/180)));
+
     // std::cout << "angular Speed : " << m_gyro->GetRotationChange()*(180/M_PI) << std::endl;
 
     // m_swerveModuleFR->displayModuleData();
