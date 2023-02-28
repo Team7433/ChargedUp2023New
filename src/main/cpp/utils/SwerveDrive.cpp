@@ -155,9 +155,27 @@ void SwerveDrive::updateOdometry(units::radians_per_second_t angularSpeed, units
     // Vector2D* summedVectorBL = m_moduleBL->getDirection() - rotationalTangentVectors.BackLeft;
 
     //find the average of the direction and velocity vector
-    units::radian_t averageDirection = (summedVectorFR->getDirection() + summedVectorFL->getDirection() + summedVectorBR->getDirection() + summedVectorBL->getDirection())/4;
+    // units::radian_t averageDirection = (summedVectorFR->getDirection() + summedVectorFL->getDirection() + summedVectorBR->getDirection() + summedVectorBL->getDirection())/4;
     units::meter_t averageVelocity = (summedVectorFR->getMagnitude() + summedVectorFL->getMagnitude() + summedVectorBR->getMagnitude() + summedVectorBL->getMagnitude())/4;
     
+
+    summedVectorBL->setMagnitude(1_m);
+    summedVectorBR->setMagnitude(1_m);
+    summedVectorFL->setMagnitude(1_m);
+    summedVectorFR->setMagnitude(1_m);
+
+    Vector2D* averageDirectionVec = *summedVectorFR + *summedVectorFL;
+    averageDirectionVec->setMagnitude(1_m);
+    averageDirectionVec = *averageDirectionVec + *summedVectorBR;
+    averageDirectionVec->setMagnitude(1_m);
+    averageDirectionVec = *averageDirectionVec + *summedVectorBL;
+    
+
+    units::radian_t averageDirection {averageDirectionVec->getDirection()};
+
+    // units::radian_t averageDirection = summedVectorBR->getDirection();
+    // units::meter_t averageVelocity = summedVectorBR->getMagnitude();
+
     // delete vector pointers
     delete summedVectorFR;
     delete summedVectorFL;
@@ -174,10 +192,16 @@ void SwerveDrive::updateOdometry(units::radians_per_second_t angularSpeed, units
 
     // std::cout << "Direction of Travel: " << summedVector->getDirection().to<double>()*(180/M_PI) << " Speed of travel: " << summedVector->getMagnitude().to<double>() << std::endl;
 
+    if (travelVelocity->getMagnitude() < 0.001_m) {
+        travelVelocity->setMagnitude(0_m);
+    }
+
+    // std::cout << "Angular speed: " << angularSpeed.to<double>()*180/M_PI << std::endl;
     // std::cout << "Direction: " << travelVelocity->getDirection().to<double>()*180/M_PI << " Speed: " << travelVelocity->getMagnitude().to<double>() << std::endl;
 
     units::second_t deltaTime = getDeltaTime();
-    std::cout << "angular Speed : " << angularSpeed.to<double>()*m_radius.to<double>()  << " travel Velocity: " << m_moduleFL->getDirection().getMagnitude().to<double>() << std::endl;
+    std::cout << units::math::atan2(0_m - m_currentPosition.y_pos, 0_m - m_currentPosition.x_pos).to<double>()*180/M_PI << std::endl;
+    // std::cout << "angular Speed : " << angularSpeed.to<double>()*m_radius.to<double>()  << " travel Velocity: " << m_moduleFL->getDirection().getMagnitude().to<double>() << std::endl;
 
     //add the change in position to the current position
     // m_currentPosition.x_pos = units::meter_t(travelVelocity->getX().to<double>()*0.02) + m_currentPosition.x_pos;
