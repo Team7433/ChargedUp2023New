@@ -9,6 +9,8 @@
 
 #include "subsystems/SwerveDrivetrain.h"
 
+#include <frc/Timer.h>
+
 /**
  * An example command.
  *
@@ -19,7 +21,7 @@
 class MoveTo
     : public frc2::CommandHelper<frc2::CommandBase, MoveTo> {
  public:
-  MoveTo(SwerveDrivetrain* SwerveDrive, iona::coordinate targetCoordinate);
+  MoveTo(SwerveDrivetrain* SwerveDrive, Gyro* gyro, iona::coordinate targetCoordinate, units::degree_t faceFirection);
 
   void Initialize() override;
 
@@ -31,14 +33,31 @@ class MoveTo
 
  private:
 
- units::radian_t getMoveDirection();
+   units::radian_t getMoveDirection();
+   units::meter_t getDistanceLeft();
+   units::second_t getDeltaTime();
+   units::degree_t getRotationError();
+
 
 
   iona::coordinate m_targetCoordinate;
   SwerveDrivetrain* m_swerveDrive;
+  Gyro* m_gyro;
+
+  units::meters_per_second_t m_maxVelocity{1_mps};
+  units::meters_per_second_squared_t m_maxAcceleration{2_mps_sq};
+  units::meters_per_second_t m_endVelocity{0.0_mps};
+
+  units::meter_t m_distanceLeft{0.0_m};
 
 
+  units::meters_per_second_t m_newVelocity{0.0_mps};
+  units::meters_per_second_t m_currentVelocity{0.0_mps};
 
 
+  double m_rotateKP{0.02};
+  units::degree_t m_targetFaceDirection{0_deg};
+
+  frc::Timer m_timer;
 
 };

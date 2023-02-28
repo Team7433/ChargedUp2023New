@@ -30,7 +30,7 @@ class SwerveDrivetrain : public frc2::SubsystemBase {
    * Will be called periodically whenever the CommandScheduler runs.
    */
   void Periodic() override;
-  void Drive(units::radian_t direction, units::meter_t magnitude, double rotation, units::radian_t gyroAngle);
+  void Drive(units::radian_t direction, units::meter_t magnitude, double rotation);
 
   void ResetOdometry() {m_swerveDrive->resetOdometryCoordinate();}
 

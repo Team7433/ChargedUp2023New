@@ -25,7 +25,7 @@ void DriveWithJoystick::Execute() {
   // m_swerveDrivetrain->setOutput(m_joystick->GetMagnitude()*0.1);
 
 
-  m_swerveDrivetrain->Drive(units::radian_t(-m_joystick->GetDirectionRadians()), units::meter_t((m_joystick->GetMagnitude()>0.05)?m_joystick->GetMagnitude():0) , m_joystick->GetZ()*0.3, 0_rad);
+  m_swerveDrivetrain->Drive(units::radian_t(-m_joystick->GetDirectionRadians()), units::meter_t((m_joystick->GetMagnitude()>0.05)?m_joystick->GetMagnitude():0) , m_joystick->GetZ()*0.3);
 
 
 }

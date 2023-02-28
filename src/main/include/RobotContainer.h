@@ -15,15 +15,16 @@
 #include "subsystems/SwerveDrivetrain.h"
 #include "subsystems/Vision.h"
 
+#include "subsystems/ExampleSubsystem.h"
 
 #include "Constants.h"
-#include "subsystems/ExampleSubsystem.h"
+
 #include "commands/DriveWithJoystick.h"
 #include "commands/TurnToTarget.h"
 #include "commands/JoystickArmControl.h"
 #include "commands/HoldArm.h"
 #include "commands/AutoTarget.h"
-
+#include "commands/MoveTo.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since

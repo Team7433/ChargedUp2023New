@@ -21,6 +21,11 @@ RobotContainer::RobotContainer() : m_swerveDrive(&m_gyro){
 void RobotContainer::ConfigureBindings() {
   // Configure your trigger bindings here
 
+
+  frc2::Trigger([this] {return m_joystick.GetRawButton(3);}).OnTrue(MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0_m, .y_pos = 0_m}, 0_deg).ToPtr());
+
+
+
   // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
   frc2::Trigger([this] {
     return m_joystick.GetRawButton(2);

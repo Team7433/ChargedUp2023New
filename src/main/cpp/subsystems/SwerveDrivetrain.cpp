@@ -24,7 +24,7 @@ void SwerveDrivetrain::Periodic() {
 }
 
 
-void SwerveDrivetrain::Drive(units::radian_t direction, units::meter_t magnitude, double rotation, units::radian_t gyroAngle) {
+void SwerveDrivetrain::Drive(units::radian_t direction, units::meter_t magnitude, double rotation) {
     iona::Vector2D directionVec(direction, magnitude);
 
     m_swerveDrive->Drive(directionVec, rotation, units::degree_t(m_gyro->GetRotation()));

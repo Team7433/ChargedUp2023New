@@ -50,6 +50,8 @@ namespace iona {
         
         void resetOdometryCoordinate() {m_currentPosition.x_pos = 0_m; m_currentPosition.y_pos = 0_m;}
 
+        void setVelocityMode(bool state) {m_velocityDrive = state;}
+
      private:
         //perform pythag to find the hypotenuse length
         double pythagFindHypot(double x, double y) {return sqrt( pow(x, 2) + pow(y, 2) );};
