@@ -10,6 +10,7 @@
 #include "subsystems/SwerveDrivetrain.h"
 
 #include <frc/Timer.h>
+#include <math.h>
 
 /**
  * An example command.
@@ -33,6 +34,9 @@ class MoveTo
 
  private:
 
+   units::radian_t closestPathError(units::radian_t error);
+
+
    units::radian_t getMoveDirection();
    units::meter_t getDistanceLeft();
    units::second_t getDeltaTime();
@@ -44,8 +48,8 @@ class MoveTo
   SwerveDrivetrain* m_swerveDrive;
   Gyro* m_gyro;
 
-  units::meters_per_second_t m_maxVelocity{1_mps};
-  units::meters_per_second_squared_t m_maxAcceleration{2_mps_sq};
+  units::meters_per_second_t m_maxVelocity{3_mps};
+  units::meters_per_second_squared_t m_maxAcceleration{2.5_mps_sq};
   units::meters_per_second_t m_endVelocity{0.0_mps};
 
   units::meter_t m_distanceLeft{0.0_m};
@@ -55,7 +59,11 @@ class MoveTo
   units::meters_per_second_t m_currentVelocity{0.0_mps};
 
 
-  double m_rotateKP{0.02};
+  double m_rotateKP{0.015};
+  double m_rotateKI{0.001};
+
+  double m_accumulator{0.0};
+
   units::degree_t m_targetFaceDirection{0_deg};
 
   frc::Timer m_timer;

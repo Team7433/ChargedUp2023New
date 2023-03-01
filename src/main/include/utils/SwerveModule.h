@@ -82,10 +82,16 @@ namespace iona {
         //display module info onto smartdashboard
         void displayModuleData();
      
+        void setInversion(bool state) {
+            m_driveMotor->SetInverted(state);
+        }
+
         Vector2D getDirection();
      
      private:
         
+        
+
         //output inversion logic to flip drive direction if the error is larger than 180
         units::radian_t outputInversion(units::radian_t error);
         int m_outputInversion{1};

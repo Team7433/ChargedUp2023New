@@ -32,6 +32,7 @@ SwerveModule::SwerveModule(int driveMotorID, int pivotMotorID, int CANCoderID, d
     m_driveMotor->Config_kD(kslotIndex, m_PID_D["D"], kTimeoutMs);
     m_driveMotor->Config_kF(kslotIndex, m_PID_D["F"], kTimeoutMs);
 
+
     //setup absolute encoder
     m_absEncoder->ConfigAbsoluteSensorRange(ctre::phoenix::sensors::AbsoluteSensorRange::Unsigned_0_to_360);
 
@@ -52,8 +53,12 @@ void SwerveModule::resetEncoderPosition() {
 
 void SwerveModule::Set(units::meters_per_second_t velocity) {
     //encoder velocity is in encoder counts per 100ms
+    if(velocity < 0.3_mps) {
+        m_driveMotor->Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0); // Set the velocity
+        return;
+    }
     double encoderVelocity = (velocity.to<double>() * k_setupInfo.kencoderPerM) / 10; 
-    m_driveMotor->Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, encoderVelocity); // Set the velocity
+    m_driveMotor->Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, encoderVelocity*m_outputInversion); // Set the velocity
 }
 
 void SwerveModule::Set(double output) {

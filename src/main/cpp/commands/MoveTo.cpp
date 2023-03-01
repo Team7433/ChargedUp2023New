@@ -45,8 +45,14 @@ void MoveTo::Execute() {
 
   m_currentVelocity = m_newVelocity;
 
+  if (units::math::fabs(getRotationError()) < 10_deg) {
+    m_accumulator -= getRotationError().to<double>();
+  } else {
+    m_accumulator = 0;
+  }
 
-  double angleRotationOutput = m_rotateKP*(getRotationError()).to<double>();
+  std::cout << m_accumulator <<" " <<  m_gyro->GetRotation() << std::endl;
+  double angleRotationOutput = m_rotateKP*-(getRotationError()).to<double>() + m_rotateKI * m_accumulator;
 
   m_swerveDrive->Drive(getMoveDirection(), units::meter_t(m_newVelocity.to<double>()), angleRotationOutput);
 
@@ -64,22 +70,48 @@ void MoveTo::Execute() {
 }
 
 // Called once the command ends or is interrupted.
-void MoveTo::End(bool interrupted) {}
+void MoveTo::End(bool interrupted) {
+
+  m_currentVelocity = 0_mps;
+  m_newVelocity = 0_mps;
+  m_accumulator = 0;
+  m_swerveDrive->Drive(0_rad, 0_m, 0.0);
+  m_timer.Stop();
+  m_timer.Reset();
+
+}
 
 // Returns true when the command should end.
 bool MoveTo::IsFinished() {
 
-  bool distanceArrived = getDistanceLeft() < 0.2_m;
-  bool angleArrived = getRotationError() < 3_deg;
+  bool distanceArrived = getDistanceLeft() < 0.1_m;
+  bool angleArrived = units::math::fabs(getRotationError()) < 2_deg;
 
   return distanceArrived && angleArrived;
 }
 
 units::degree_t MoveTo::getRotationError() {
 
-  return m_targetFaceDirection - units::degree_t(m_gyro->GetRotation());
+  double signOfGyroAngle = abs(m_gyro->GetRotation())/m_gyro->GetRotation();
+
+  return closestPathError(m_targetFaceDirection - units::degree_t(signOfGyroAngle==1?m_gyro->GetRotation():m_gyro->GetRotation()+360));
 
 }
+
+
+units::radian_t MoveTo::closestPathError(units::radian_t error) {
+
+    if (units::math::fabs(error) <= 90_deg) return error; // if the error is smaller than 90 deg do nothing
+
+    double m_currentDirection = units::math::fabs(error)/error; // the sign of the error -1 or 1 
+    
+    units::radian_t newError = (360_deg - units::math::fabs(error)); // find the error required to turn in the other direction
+    
+    newError = newError * -m_currentDirection; //make the sign of the new error to the opposite of the old error
+
+    return newError; 
+}
+
 
 units::radian_t MoveTo::getMoveDirection() {
 

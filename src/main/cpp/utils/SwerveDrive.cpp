@@ -4,6 +4,10 @@ using namespace iona;
 
 SwerveDrive::SwerveDrive(SwerveModule* TopLeftModule, SwerveModule* TopRightModule, SwerveModule* BottomLeftModule, SwerveModule* BottomRightModule, units::meter_t trackWidth, units::meter_t wheelBase) : m_moduleFL{TopLeftModule}, m_moduleFR{TopRightModule} , m_moduleBL{BottomLeftModule}, m_moduleBR{BottomRightModule}, m_trackWidth{trackWidth}, m_wheelBase{wheelBase} {
 
+    // m_moduleBL->setInversion(true);
+    // m_moduleFR->setInversion(true);
+    // m_moduleBR->setInversion(true);
+
 }
 
 tangentVectors SwerveDrive::getTangentVectors(units::meter_t magnitude) {
@@ -200,7 +204,8 @@ void SwerveDrive::updateOdometry(units::radians_per_second_t angularSpeed, units
     // std::cout << "Direction: " << travelVelocity->getDirection().to<double>()*180/M_PI << " Speed: " << travelVelocity->getMagnitude().to<double>() << std::endl;
 
     units::second_t deltaTime = getDeltaTime();
-    std::cout << units::math::atan2(0_m - m_currentPosition.y_pos, 0_m - m_currentPosition.x_pos).to<double>()*180/M_PI << std::endl;
+    // std::cout << units::math::atan2(0_m - m_currentPosition.y_pos, 0_m - m_currentPosition.x_pos).to<double>()*180/M_PI
+    //  << std::endl;
     // std::cout << "angular Speed : " << angularSpeed.to<double>()*m_radius.to<double>()  << " travel Velocity: " << m_moduleFL->getDirection().getMagnitude().to<double>() << std::endl;
 
     //add the change in position to the current position

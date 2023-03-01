@@ -63,7 +63,7 @@ class SwerveDrivetrain : public frc2::SubsystemBase {
 
   iona::SwerveDrive* m_swerveDrive = new iona::SwerveDrive(m_swerveModuleFL, m_swerveModuleFR, m_swerveModuleBL, m_swerveModuleBR, kTrackWidth, kWheelBase);
 
-  PigeonIMU* m_gyro2 = new PigeonIMU{50};
+  // PigeonIMU* m_gyro2 = new PigeonIMU{50};
   
 
   Gyro* m_gyro;

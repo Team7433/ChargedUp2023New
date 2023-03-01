@@ -23,16 +23,16 @@ constexpr int kDriverControllerPort = 1;
 namespace DriveTrainConstants {
 
     //offset of mag encoders to starting position
-    constexpr double kEncoderOffsetBR = 225.3;
-    constexpr double kEncoderOffsetBL = 66.7;
-    constexpr double kEncoderOffsetFR = 353.3;
-    constexpr double kEncoderOffsetFL = 177.81;
+    // constexpr double kEncoderOffsetBR = 225.3;
+    // constexpr double kEncoderOffsetBL = 66.7;
+    // constexpr double kEncoderOffsetFR = 353.3;
+    // constexpr double kEncoderOffsetFL = 177.81;
 
     //2021 bot encoder values
-    // const double kEncoderOffsetFL{351.562};
-    // const double kEncoderOffsetFR{248.203};
-    // const double kEncoderOffsetBL{4.482};
-    // const double kEncoderOffsetBR{323.438};
+    const double kEncoderOffsetFL{351.562};
+    const double kEncoderOffsetFR{248.203};
+    const double kEncoderOffsetBL{4.482};
+    const double kEncoderOffsetBR{323.438};
 
 }
 

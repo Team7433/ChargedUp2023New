@@ -36,6 +36,21 @@ void RobotContainer::ConfigureBindings() {
   }).OnTrue(AutoTarget(&m_swerveDrive, &m_gyro, &m_vision, &m_joystick, &m_controller).ToPtr());
 
 
+  frc2::Trigger([this]{
+    return m_joystick.GetRawButton(4);
+  }).OnTrue(frc2::SequentialCommandGroup(
+
+    MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0_m, .y_pos = -2.25_m}, 0_deg),
+    MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 5.2_m, .y_pos = -2.25_m}, 0_deg),
+    MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 5.2_m, .y_pos = -1.55_m}, 0_deg),
+    MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 5.2_m, .y_pos = -2.25_m}, 0_deg),
+    MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0_m, .y_pos = -2.25_m}, 0_deg),
+    MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0_m, .y_pos = 0_m}, 90_deg)
+
+  ).ToPtr());
+
+
+
   // frc2::Trigger([this]{return m_driverController.GetRawButton(8);}).OnTrue(TurnToTarget(&m_swerveDrive, &m_gyro, &m_vision).ToPtr());
 
   // Schedule `ExampleMethodCommand` when the Xbox controller's B button is
