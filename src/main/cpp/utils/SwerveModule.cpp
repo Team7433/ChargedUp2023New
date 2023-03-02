@@ -124,13 +124,6 @@ void SwerveModule::Set(units::radian_t heading) {
 
 }
 
-void SwerveModule::encoderDriftCheck() {
-    //if the difference between the abs encoder and motor encoder is greater than 5 degrees then reset motor encoder position
-    if(fabs((m_absEncoder->GetAbsolutePosition()-kAbsEncoderOffset) - (m_pivotMotor->GetSelectedSensorPosition()/k_setupInfo.kEncoderPerDegree)) > 5) {
-        resetEncoderPosition();
-    }
-
-}
 
 
 

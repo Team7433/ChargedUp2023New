@@ -20,8 +20,8 @@ SetArmPosition::SetArmPosition(Arm* arm, double targetPosition) {
 // Called when the command is initially scheduled.
 void SetArmPosition::Initialize() {
 
-  m_arm->RunMotionMagic(m_targetPosition);
-  // std::cout << "SetArmPosition Called" << std::endl;
+  m_arm->setMotionMagic(m_targetPosition);
+  std::cout << "Set Arm Position to " << m_targetPosition << " encoder counts " << std::endl;
 
 
 }
@@ -34,9 +34,13 @@ void SetArmPosition::Execute() {
 }
 
 // Called once the command ends or is interrupted.
-void SetArmPosition::End(bool interrupted) {}
+void SetArmPosition::End(bool interrupted) {
+
+  std::cout << "Arm arrived at " << m_targetPosition << " encoder counts " << std::endl;
+
+}
 
 // Returns true when the command should end.
 bool SetArmPosition::IsFinished() {
-  return m_arm->GetMotionMagicTarget() == m_targetPosition;
+  return m_arm->getActiveTrajectoryPosition() == m_targetPosition;
 }

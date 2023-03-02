@@ -4,7 +4,6 @@
 
 #include "commands/AutoTarget.h"
 
-using namespace SwerveDriveConstants;
 
 AutoTarget::AutoTarget(SwerveDrivetrain* swerveDriveTrain, Gyro* gyro, Vision* vision, frc::Joystick* joystick, frc::XboxController* controller) {
   // Use addRequirements() here to declare subsystem dependencies.

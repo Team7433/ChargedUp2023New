@@ -14,11 +14,6 @@
  * they are needed.
  */
 
-namespace OperatorConstants {
-
-constexpr int kDriverControllerPort = 1;
-
-}  // namespace OperatorConstants
 
 namespace DriveTrainConstants {
 
@@ -29,11 +24,6 @@ namespace DriveTrainConstants {
     // constexpr double kEncoderOffsetFL = 177.81;
 
     //2021 bot encoder values
-    // const double kEncoderOffsetFL{351.562};
-    // const double kEncoderOffsetFR{248.203};
-    // const double kEncoderOffsetBL{4.482};
-    // const double kEncoderOffsetBR{323.438};
-
     const double kEncoderOffsetFL{90.0};
     const double kEncoderOffsetFR{84.5};
     const double kEncoderOffsetBL{54.4};
@@ -43,15 +33,6 @@ namespace DriveTrainConstants {
 
 }
 
-namespace SwerveDriveConstants {
-    static constexpr double kJoystickRotateDeadZone{0.25};
-    static constexpr double kJoystickStrafeDeadZone{0.15};
-    static constexpr double kJoystickForwardDeadZone{0.15};
-
-    static constexpr double kStrafeMultiplier{1.85};
-    static constexpr double kForwardMultiplier{1.85};
-    static constexpr double kRotateMultiplier{1.25};
-}
 
 namespace JoystickDriveConstants {
     constexpr double kJoyStickDampen = 0.5;
@@ -62,5 +43,4 @@ namespace ArmConstants {
     constexpr unsigned int kArmMotorTwo = 10;
 
     constexpr unsigned int kLimitSwitchID = 0; // Configure this
-    constexpr unsigned int kArmEncoderRange = 20000; // Configure this
 }

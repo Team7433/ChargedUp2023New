@@ -36,7 +36,8 @@ MoveTo::MoveTo(SwerveDrivetrain* SwerveDrive, Gyro* gyro, iona::coordinate targe
 // Called when the command is initially scheduled.
 void MoveTo::Initialize() {
 
-  std::cout << "Travel Direction To Coordinate: " << getMoveDirection().to<double>()*180/M_PI << " Degrees\n";
+  // std::cout << "Travel Direction To Coordinate: " << getMoveDirection().to<double>()*180/M_PI << " Degrees\n";
+  std::cout << "Traveling to x: " << m_targetCoordinate.x_pos.to<double>() << ", y: " << m_targetCoordinate.y_pos.to<double>() << " from x: " << m_swerveDrive->getOdometryCoordinate().x_pos.to<double>() << ", y: " << m_swerveDrive->getOdometryCoordinate().y_pos.to<double>() << std::endl;
 
 }
 
@@ -65,7 +66,7 @@ void MoveTo::Execute() {
     m_accumulator = 0;
   }
 
-  std::cout << m_accumulator <<" " <<  m_gyro->GetRotation() << std::endl;
+  // std::cout << m_accumulator <<" " <<  m_gyro->GetRotation() << std::endl;
   double angleRotationOutput = m_rotateKP*-(getRotationError()).to<double>() + m_rotateKI * m_accumulator;
 
   m_swerveDrive->Drive(getMoveDirection(), units::meter_t(m_newVelocity.to<double>()), angleRotationOutput);
@@ -86,10 +87,15 @@ void MoveTo::Execute() {
 // Called once the command ends or is interrupted.
 void MoveTo::End(bool interrupted) {
 
+
+
   m_currentVelocity = 0_mps;
   m_newVelocity = 0_mps;
   m_accumulator = 0;
   m_swerveDrive->Drive(0_rad, 0_m, 0.0);
+
+  std::cout << "Finished Move To with distance error of " << getDistanceLeft().to<double>() << ", and angle error of " << getRotationError().to<double>() << " Degrees";
+
   m_timer.Stop();
   m_timer.Reset();
 

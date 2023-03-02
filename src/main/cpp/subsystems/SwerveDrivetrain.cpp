@@ -10,16 +10,8 @@ SwerveDrivetrain::SwerveDrivetrain(Gyro* gyro){
 
 // This method will be called once per scheduler run
 void SwerveDrivetrain::Periodic() {
-    // double gyroRawValues[3];
-    // m_gyro2->GetRawGyro(gyroRawValues);
+
     m_swerveDrive->updateOdometry(units::radians_per_second_t(m_gyro->GetRotationChange()), units::radian_t(m_gyro->GetRotation()*(M_PI/180)));
-
-    // std::cout << "angular Speed : " << m_gyro->GetRotationChange()*(180/M_PI) << std::endl;
-
-    // m_swerveModuleFR->displayModuleData();
-    // m_swerveModuleFL->displayModuleData();
-    // m_swerveModuleBR->displayModuleData();
-    // m_swerveModuleBL->displayModuleData();
     m_swerveDrive->DisplayData();
 }
 
@@ -28,6 +20,5 @@ void SwerveDrivetrain::Drive(units::radian_t direction, units::meter_t magnitude
     iona::Vector2D directionVec(direction, magnitude);
     m_swerveDrive->setVelocityMode(true);
     m_swerveDrive->Drive(directionVec, rotation, units::degree_t(m_gyro->GetRotation()));
-    //std::cout << units::degree_t(->GetRotation() << std::endl;
 }
 

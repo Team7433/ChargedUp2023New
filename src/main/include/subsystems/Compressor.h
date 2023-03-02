@@ -15,7 +15,7 @@ class Compressor : public frc2::SubsystemBase {
    * Will be called periodically whenever the CommandScheduler runs.
    */
   void Periodic() override;
-  void setCompressorOn(bool state){if (state){compressor.EnableDigital();} else {compressor.Disable();}} // Setting the compressor on or off (for Tommy)
+  void setCompressorOn(bool state){if(state) {compressor.EnableDigital();} else {compressor.Disable();}} // Setting the compressor on or off (for Tommy)
 
 
  private:

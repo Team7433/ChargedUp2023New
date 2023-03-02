@@ -48,21 +48,29 @@ void SwerveDrive::Drive(Vector2D MoveDirection, double rotationValue, units::rad
     //logic assumes unit circle starts at zero, counter clock wise is positive and 0 is in the direction of travel positively
     //create the vectors that are tangent to the circle that the 4 swerve modules sit on for each swerve module
     
-    Vector2D FrontLeftTang{units::math::atan2(m_trackWidth/2, m_wheelBase/2) + 90_deg, units::meter_t(rotationValue)};
+    // Vector2D FrontLeftTang{units::math::atan2(m_trackWidth/2, m_wheelBase/2) + 90_deg, units::meter_t(rotationValue)};
 
-    Vector2D FrontRightTang{units::math::atan2(-m_trackWidth/2, m_wheelBase/2) + 90_deg, units::meter_t(rotationValue)};
+    // Vector2D FrontRightTang{units::math::atan2(-m_trackWidth/2, m_wheelBase/2) + 90_deg, units::meter_t(rotationValue)};
 
-    Vector2D BottomLeftTang{units::math::atan2(m_trackWidth/2, -m_wheelBase/2) + 90_deg, units::meter_t(rotationValue)};
+    // Vector2D BottomLeftTang{units::math::atan2(m_trackWidth/2, -m_wheelBase/2) + 90_deg, units::meter_t(rotationValue)};
 
-    Vector2D BottomRightTang{units::math::atan2(-m_trackWidth/2, -m_wheelBase/2) + 90_deg, units::meter_t(rotationValue)};
+    // Vector2D BottomRightTang{units::math::atan2(-m_trackWidth/2, -m_wheelBase/2) + 90_deg, units::meter_t(rotationValue)};
 
+    tangentVectors tangVectors = getTangentVectors(units::meter_t(rotationValue));
 
     //set the output vector to be the sum of the tangent vector and the over move direction vector
     deleteOldOutputVecs(); // cleans up the old vectors stored
-    outputVector["FrontLeft"] = (FrontLeftTang + MoveDirection);
-    outputVector["FrontRight"] =  (FrontRightTang + MoveDirection);
-    outputVector["BackLeft"] = (BottomLeftTang + MoveDirection);
-    outputVector["BackRight"] = (BottomRightTang + MoveDirection);
+
+
+    // outputVector["FrontLeft"] = (FrontLeftTang + MoveDirection);
+    // outputVector["FrontRight"] =  (FrontRightTang + MoveDirection);
+    // outputVector["BackLeft"] = (BottomLeftTang + MoveDirection);
+    // outputVector["BackRight"] = (BottomRightTang + MoveDirection);
+
+    outputVector["FrontLeft"] = (tangVectors.FrontLeft + MoveDirection);
+    outputVector["FrontRight"] =  (tangVectors.FrontRight + MoveDirection);
+    outputVector["BackLeft"] = (tangVectors.BackLeft + MoveDirection);
+    outputVector["BackRight"] = (tangVectors.BackRight + MoveDirection);
 
 
     //Applies the output vector to the motors
@@ -217,3 +225,11 @@ void SwerveDrive::updateOdometry(units::radians_per_second_t angularSpeed, units
 }
 
 
+void SwerveDrive::resetSwerveModuleEncoders() {
+
+    m_moduleFL->resetEncoderPosition();
+    m_moduleFR->resetEncoderPosition();
+    m_moduleBL->resetEncoderPosition();
+    m_moduleBR->resetEncoderPosition();
+
+}

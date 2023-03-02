@@ -41,16 +41,24 @@ namespace iona {
 
         //drive with a given vector for move direction
         void Drive(Vector2D MoveDirection, double rotationValue, units::radian_t gyroAngle);
+        
         // Display Data on all swerve modules and on swerve drive
         void DisplayData() const;
+
         //update the current odometry
         void updateOdometry(units::radians_per_second_t changeInRotation, units::radian_t currentGyroAngle);
 
+        //gets the current odometry coordinates
         coordinate getOdometryCoordinate() const {return m_currentPosition;}
         
+        //zero's the current odometry coordinates
         void resetOdometryCoordinate() {m_currentPosition.x_pos = 0_m; m_currentPosition.y_pos = 0_m;}
 
+        //set whether the modules are driving in velocity mode or percentage output, if in velocity mode must pass in values in mp/s
         void setVelocityMode(bool state) {m_velocityDrive = state;}
+
+        //resets the encoder position of the swerve pivot motors to the ABS encoder offsets
+        void resetSwerveModuleEncoders();
 
      private:
         //perform pythag to find the hypotenuse length

@@ -18,28 +18,37 @@ using namespace ArmConstants;
 class Arm : public frc2::SubsystemBase {
  public:
   Arm();
-  void setArm(double pcgo){m_armMotorOne->Set(ControlMode::PercentOutput, pcgo);}
-
-  // void setPosition(double pos){m_armMotorOne->Set(ControlMode::Position, pos); std::cout << "armsetting" << std::endl;}
+  //set percentage output
+  void setPercentageOutput(double output);
   
-  void RunMotionMagic(double pos) {m_armMotorOne->Set(ControlMode::MotionMagic, pos);}
-  double GetMotionMagicTarget() {return m_armMotorOne->GetActiveTrajectoryPosition();}
+  //set motion magic target
+  void setMotionMagic(double position);
 
-  double getPosition(){return m_armMotorOne->GetSelectedSensorPosition();}
+  //get the current active target of the motion magic
+  double getActiveTrajectoryPosition();
+
+  //get the target position of the motion magic
+  double getMotionMagicTargetPosition();
+
+  //get the current encoder count position
+  double getPosition();
   
-  double getTargetPos() {return m_armMotorOne->GetClosedLoopTarget();}
+  //get the target pos of the arm motors in encoder counts
+  double getTargetPos();
 
-  void extendArm(frc::DoubleSolenoid::Value val){extensionSolenoid.Set(val);}
+  //disable arm braking mode and set to percentage output mode
+  void freeArm();
 
-  void setAngle(double angle){} // Still gotta think about foolproof logic
-  // double getAngle(){}
+  //set motors to brake mode
+  void enableBrakeMode();
 
-  void calibrateArm(){
-    if (! m_limitSwitch.Get()){
-      m_armMotorOne->SetSelectedSensorPosition(kArmEncoderRange/2); // Setting arm to vertical position
-  }}
 
-  
+  //Pneumatic control functions
+  //Set the state of extension on the arm
+  void extendArm(frc::DoubleSolenoid::Value val); 
+  //set the grabber state
+  void setClaw(frc::DoubleSolenoid::Value state){clawSolenoid.Set(state);}
+
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -49,10 +58,16 @@ class Arm : public frc2::SubsystemBase {
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
+
+  double m_motionMagicTarget{0.0};
+
   WPI_TalonFX * m_armMotorOne = new WPI_TalonFX{kArmMotorOne};
   WPI_TalonFX * m_armMotorTwo = new WPI_TalonFX{kArmMotorTwo};
 
   frc::DigitalInput m_limitSwitch{kLimitSwitchID};
+
+
+  frc::DoubleSolenoid clawSolenoid{0, frc::PneumaticsModuleType::CTREPCM, 4, 0};
   frc::DoubleSolenoid extensionSolenoid{frc::PneumaticsModuleType::CTREPCM, 5, 1};
 
   

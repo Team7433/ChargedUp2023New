@@ -6,24 +6,21 @@
 
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/button/CommandXboxController.h>
-#include <frc/XboxController.h>
 #include <frc2/command/SequentialCommandGroup.h>
+#include <frc/XboxController.h>
 
 #include "subsystems/Arm.h"
-#include "subsystems/Claw.h"
 #include "subsystems/Compressor.h"
 #include "subsystems/Gyro.h"
 #include "subsystems/SwerveDrivetrain.h"
 #include "subsystems/Vision.h"
 
-#include "subsystems/ExampleSubsystem.h"
 
 #include "Constants.h"
 
 #include "commands/DriveWithJoystick.h"
 #include "commands/TurnToTarget.h"
 #include "commands/JoystickArmControl.h"
-#include "commands/HoldArm.h"
 #include "commands/AutoTarget.h"
 #include "commands/MoveTo.h"
 
@@ -43,7 +40,7 @@ class RobotContainer {
   frc2::CommandPtr GetAutonomousCommand();
 
   void armPercentageOutput(double output) {
-    m_arm.setArm(output);
+    m_arm.setPercentageOutput(output);
   }
 
   void setCompressorWrapper(bool state) {
@@ -54,12 +51,10 @@ class RobotContainer {
 
  private:
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  frc2::CommandXboxController m_driverController{0};
-  frc::Joystick m_joystick{1};
+  frc2::CommandXboxController m_controller{1};
+  frc::Joystick m_driverStick{0};
 
   // The robot's subsystems are defined here...
-  ExampleSubsystem m_subsystem;
-  Claw m_claw;
   Arm m_arm;
   Compressor m_compressor;
   SwerveDrivetrain m_swerveDrive;

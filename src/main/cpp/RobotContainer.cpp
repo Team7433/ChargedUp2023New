@@ -6,14 +6,12 @@
 
 #include <frc2/command/button/Trigger.h>
 
-#include "commands/Autos.h"
-#include "commands/ExampleCommand.h"
 #include <frc2/command/InstantCommand.h>
 
 RobotContainer::RobotContainer() : m_swerveDrive(&m_gyro){
   // Initialize all of your commands and subsystems here
-  m_swerveDrive.SetDefaultCommand(DriveWithJoystick(&m_swerveDrive, &m_joystick));
-  m_arm.SetDefaultCommand(JoystickArmControl(&m_arm, &m_driverController));
+  m_swerveDrive.SetDefaultCommand(DriveWithJoystick(&m_swerveDrive, &m_driverStick));
+  m_arm.SetDefaultCommand(JoystickArmControl(&m_arm, &m_controller));
   // Configure the button bindings
   ConfigureBindings();
 }
@@ -22,22 +20,18 @@ void RobotContainer::ConfigureBindings() {
   // Configure your trigger bindings here
 
 
-  frc2::Trigger([this] {return m_joystick.GetRawButton(3);}).OnTrue(MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0_m, .y_pos = 0_m}, 0_deg).ToPtr());
+  frc2::Trigger([this] {return m_driverStick.GetRawButton(3);}).OnTrue(MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0_m, .y_pos = 0_m}, 0_deg).ToPtr());
 
 
-
-  // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-  frc2::Trigger([this] {
-    return m_joystick.GetRawButton(2);
-  }).OnTrue(frc2::InstantCommand([this]{m_gyro.Reset(); m_swerveDrive.ResetOdometry();}).ToPtr());
-
-  // frc2::Trigger([this]{
-  //   return m_joystick.GetRawButton(1);
-  // }).OnTrue(AutoTarget(&m_swerveDrive, &m_gyro, &m_vision, &m_joystick, &m_joystick).ToPtr());
 
 
   // frc2::Trigger([this]{
-  //   return m_joystick.GetRawButton(4);
+  //   return m_driverStick.GetRawButton(1);
+  // }).OnTrue(AutoTarget(&m_swerveDrive, &m_gyro, &m_vision, &m_driverStick, &m_driverStick).ToPtr());
+
+
+  // frc2::Trigger([this]{
+  //   return m_driverStick.GetRawButton(4);
   // }).OnTrue(frc2::SequentialCommandGroup(
 
   //   MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0_m, .y_pos = -2.25_m}, 0_deg),
@@ -49,48 +43,49 @@ void RobotContainer::ConfigureBindings() {
 
   // ).ToPtr());
 
+  //test of autonomous command
+  frc2::Trigger([this]{ return m_driverStick.GetRawButton(4); }).OnTrue(
+    frc2::SequentialCommandGroup(
+      frc2::InstantCommand([this] {m_swerveDrive.ResetOdometry();}),
+      SetArmPosition(&m_arm, -60000),
+      frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kReverse);}),
+      MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 5_m, .y_pos = 0.0_m}, 0_deg)
+    ).ToPtr());
 
 
 
-  frc2::Trigger([this]{
-    return m_joystick.GetRawButton(4);
-  }).OnTrue(frc2::SequentialCommandGroup(
-    SetArmPosition(&m_arm, -60000),
-    frc2::InstantCommand([this]{m_claw.setClaw(frc::DoubleSolenoid::kReverse);}),
-    MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 5_m, .y_pos = 0.0_m}, 0_deg)
 
 
-  ).ToPtr());
+  //reset gyro and odometry
+  frc2::Trigger([this] {
+    return m_driverStick.GetRawButton(2);
+  }).OnTrue(frc2::InstantCommand([this]{m_gyro.Reset(); m_swerveDrive.ResetOdometry();}).ToPtr());
 
+  //re zero's swerve module pivot motors
+  frc2::Trigger([this] {return m_driverStick.GetRawButton(5);}).OnTrue(
+    frc2::InstantCommand([this] {m_swerveDrive.ResetSwerveModules();}).ToPtr()
+  );
 
-  // frc2::Trigger([this]{return m_driverController.GetRawButton(8);}).OnTrue(TurnToTarget(&m_swerveDrive, &m_gyro, &m_vision).ToPtr());
+  //unlocks the arm from brake mode
+  m_controller.Start().WhileTrue(frc2::InstantCommand([this] {m_arm.freeArm();}).ToPtr());
 
-  // Schedule `ExampleMethodCommand` when the Xbox controller's B button is
-  // pressed, cancelling on release.
+  //extend arm control
+  m_controller.A().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kForward);}).ToPtr());
+  m_controller.Y().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kReverse);}).ToPtr());
 
-  m_driverController.A().WhileTrue(frc2::InstantCommand([this]{m_arm.extendArm(frc::DoubleSolenoid::Value::kForward);}).ToPtr());
-  m_driverController.Y().WhileTrue(frc2::InstantCommand([this]{m_arm.extendArm(frc::DoubleSolenoid::Value::kReverse);}).ToPtr());
+  //claw control
+  m_controller.RightBumper().WhileTrue(frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kForward);}).ToPtr());
+  m_controller.LeftBumper().WhileTrue(frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kReverse);}).ToPtr());
 
-  
+  //Arm move to collect cone position
+  m_controller.X().WhileTrue(SetArmPosition(&m_arm, -78000).ToPtr());
 
-  // m_driverController.Start().WhileTrue(HoldArm(&m_arm, &m_controller).ToPtr());
-  // m_driverController.X().WhileTrue(frc2::InstantCommand([this]{m_arm.setPosition(m_arm.getTargetPos()-2000);}).ToPtr());
-  // m_driverController.B().WhileTrue(frc2::InstantCommand([this]{m_arm.setPosition(m_arm.getTargetPos()+2000);}).ToPtr());
-
-  m_driverController.X().WhileTrue(frc2::InstantCommand([this]{m_arm.RunMotionMagic(-78000);}).ToPtr());
-  // m_driverController.B().WhileTrue(frc2::InstantCommand([this]{m_arm.RunMotionMagic(-50000);}).ToPtr());
-  m_driverController.B().WhileTrue(SetArmPosition(&m_arm, -50000).ToPtr());
-
-  m_driverController.RightBumper().WhileTrue(frc2::InstantCommand([this]{m_claw.setClaw(frc::DoubleSolenoid::kForward);}).ToPtr());
-  m_driverController.LeftBumper().WhileTrue(frc2::InstantCommand([this]{m_claw.setClaw(frc::DoubleSolenoid::kReverse);}).ToPtr());
-
-
-
-  // TODO configure some sort of command that when the Y button is pressed will move the arm to the controller axis
+  //Arm hold up cone
+  m_controller.B().WhileTrue(SetArmPosition(&m_arm, -50000).ToPtr());
 
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
-  return autos::ExampleAuto(&m_subsystem);
+  return frc2::CommandPtr{nullptr};
 }

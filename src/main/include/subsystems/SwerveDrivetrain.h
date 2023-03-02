@@ -34,6 +34,8 @@ class SwerveDrivetrain : public frc2::SubsystemBase {
 
   void ResetOdometry() {m_swerveDrive->resetOdometryCoordinate();}
 
+  void ResetSwerveModules() {m_swerveDrive->resetSwerveModuleEncoders();}
+
   iona::coordinate getOdometryCoordinate() const {return m_swerveDrive->getOdometryCoordinate();}
 
   // void SetupDriveTo(units::meters_per_second_t maxVelocity, units::meters_per_second_squared_t acceleration, units::radians_per_second_t maxRotateSpeed, units::radians_per_second_squared_t rotAcceleration);

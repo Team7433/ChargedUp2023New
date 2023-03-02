@@ -98,8 +98,7 @@ namespace iona {
 
         //calculates a new error if a closer error is found eg turning anticlockwise instead of clockwise
         units::radian_t closestPathError(units::radian_t error);
-        //checks if there has been any encoder drift between abs encoder and motor encoder and corrects if drift has been found
-        void encoderDriftCheck();
+
 
 
 
