@@ -20,9 +20,15 @@ class Arm : public frc2::SubsystemBase {
   Arm();
   void setArm(double pcgo){m_armMotorOne->Set(ControlMode::PercentOutput, pcgo);}
 
-  void setPosition(double pos){m_armMotorOne->Set(ControlMode::Position, pos); std::cout << "armsetting" << std::endl;}
+  // void setPosition(double pos){m_armMotorOne->Set(ControlMode::Position, pos); std::cout << "armsetting" << std::endl;}
+  
+  void RunMotionMagic(double pos) {m_armMotorOne->Set(ControlMode::MotionMagic, pos);}
+  double GetMotionMagicTarget() {return m_armMotorOne->GetActiveTrajectoryPosition();}
+
   double getPosition(){return m_armMotorOne->GetSelectedSensorPosition();}
+  
   double getTargetPos() {return m_armMotorOne->GetClosedLoopTarget();}
+
   void extendArm(frc::DoubleSolenoid::Value val){extensionSolenoid.Set(val);}
 
   void setAngle(double angle){} // Still gotta think about foolproof logic

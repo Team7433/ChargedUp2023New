@@ -4,9 +4,7 @@ using namespace iona;
 
 SwerveDrive::SwerveDrive(SwerveModule* TopLeftModule, SwerveModule* TopRightModule, SwerveModule* BottomLeftModule, SwerveModule* BottomRightModule, units::meter_t trackWidth, units::meter_t wheelBase) : m_moduleFL{TopLeftModule}, m_moduleFR{TopRightModule} , m_moduleBL{BottomLeftModule}, m_moduleBR{BottomRightModule}, m_trackWidth{trackWidth}, m_wheelBase{wheelBase} {
 
-    // m_moduleBL->setInversion(true);
-    // m_moduleFR->setInversion(true);
-    // m_moduleBR->setInversion(true);
+    
 
 }
 

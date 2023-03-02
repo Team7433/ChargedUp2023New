@@ -29,10 +29,17 @@ namespace DriveTrainConstants {
     // constexpr double kEncoderOffsetFL = 177.81;
 
     //2021 bot encoder values
-    const double kEncoderOffsetFL{351.562};
-    const double kEncoderOffsetFR{248.203};
-    const double kEncoderOffsetBL{4.482};
-    const double kEncoderOffsetBR{323.438};
+    // const double kEncoderOffsetFL{351.562};
+    // const double kEncoderOffsetFR{248.203};
+    // const double kEncoderOffsetBL{4.482};
+    // const double kEncoderOffsetBR{323.438};
+
+    const double kEncoderOffsetFL{90.0};
+    const double kEncoderOffsetFR{84.5};
+    const double kEncoderOffsetBL{54.4};
+    const double kEncoderOffsetBR{339.1};
+
+
 
 }
 

@@ -5,6 +5,9 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
+
+#include <frc/smartdashboard/SmartDashboard.h>
+
 #include <AHRS.h>
 #include <frc/SPI.h>
 #include <iostream>

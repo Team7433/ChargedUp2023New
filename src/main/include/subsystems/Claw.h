@@ -20,5 +20,5 @@ class Claw : public frc2::SubsystemBase {
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-  frc::DoubleSolenoid clawSolenoid{frc::PneumaticsModuleType::CTREPCM, 4, 0};
+  frc::DoubleSolenoid clawSolenoid{0, frc::PneumaticsModuleType::CTREPCM, 4, 0};
 };

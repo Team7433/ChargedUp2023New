@@ -5,7 +5,6 @@
 #include "commands/MoveTo.h"
 
 MoveTo::MoveTo(SwerveDrivetrain* SwerveDrive, Gyro* gyro, iona::coordinate targetCoordinate, units::degree_t faceDirection) {
-  // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(SwerveDrive);
 
   m_gyro = gyro;
@@ -14,6 +13,21 @@ MoveTo::MoveTo(SwerveDrivetrain* SwerveDrive, Gyro* gyro, iona::coordinate targe
   m_targetCoordinate = targetCoordinate;
 
   m_targetFaceDirection = faceDirection;
+
+}
+
+MoveTo::MoveTo(SwerveDrivetrain* SwerveDrive, Gyro* gyro, iona::coordinate targetCoordinate, units::degree_t faceDirection, MoveToConfig config) {
+  AddRequirements(SwerveDrive);
+
+  m_gyro = gyro;
+  m_swerveDrive = SwerveDrive;
+
+  m_targetCoordinate = targetCoordinate;
+
+  m_targetFaceDirection = faceDirection;
+
+  m_maxVelocity = config.maxVelocity;
+  m_maxAcceleration = config.Acceleration;
 
 
 

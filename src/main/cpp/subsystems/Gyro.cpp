@@ -10,5 +10,8 @@ Gyro::Gyro() = default;
 // This method will be called once per scheduler run
 void Gyro::Periodic() {
 
-    std::cout << "gyro " << GetRotation() << std::endl;
+    // std::cout << "gyro " << GetRotation() << std::endl;
+
+    frc::SmartDashboard::PutNumber("Gyro Angle: ", GetRotation());
+
 }

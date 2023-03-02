@@ -29,6 +29,7 @@ void Robot::RobotPeriodic() {
  */
 void Robot::DisabledInit() {
   m_container.setCompressorWrapper(false);
+  m_container.armPercentageOutput(0.0);
 }
 
 void Robot::DisabledPeriodic() {}
@@ -56,7 +57,7 @@ void Robot::TeleopInit() {
     m_autonomousCommand->Cancel();
   }
 
-  // m_container.setCompressorWrapper(true);
+  m_container.setCompressorWrapper(true);
 }
 
 /**

@@ -27,6 +27,8 @@
 #include "commands/AutoTarget.h"
 #include "commands/MoveTo.h"
 
+#include "commands/SetArmPosition.h"
+
 /**
  * This class is where the bulk of the robot should be declared.  Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -40,6 +42,10 @@ class RobotContainer {
 
   frc2::CommandPtr GetAutonomousCommand();
 
+  void armPercentageOutput(double output) {
+    m_arm.setArm(output);
+  }
+
   void setCompressorWrapper(bool state) {
     m_compressor.setCompressorOn(state);
   }
@@ -50,7 +56,6 @@ class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   frc2::CommandXboxController m_driverController{0};
   frc::Joystick m_joystick{1};
-  frc::XboxController m_controller{0};
 
   // The robot's subsystems are defined here...
   ExampleSubsystem m_subsystem;

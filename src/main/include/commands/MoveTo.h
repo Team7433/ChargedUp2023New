@@ -19,10 +19,20 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
+
+struct MoveToConfig {
+
+  units::meters_per_second_t maxVelocity;
+  units::meters_per_second_squared_t Acceleration;
+
+};
+
+
 class MoveTo
     : public frc2::CommandHelper<frc2::CommandBase, MoveTo> {
  public:
   MoveTo(SwerveDrivetrain* SwerveDrive, Gyro* gyro, iona::coordinate targetCoordinate, units::degree_t faceFirection);
+  MoveTo(SwerveDrivetrain* SwerveDrive, Gyro* gyro, iona::coordinate targetCoordinate, units::degree_t faceFirection, MoveToConfig);
 
   void Initialize() override;
 
@@ -48,11 +58,8 @@ class MoveTo
   SwerveDrivetrain* m_swerveDrive;
   Gyro* m_gyro;
 
-  units::meters_per_second_t m_maxVelocity{3_mps};
+  units::meters_per_second_t m_maxVelocity{1_mps};
   units::meters_per_second_squared_t m_maxAcceleration{2.5_mps_sq};
-  units::meters_per_second_t m_endVelocity{0.0_mps};
-
-  units::meter_t m_distanceLeft{0.0_m};
 
 
   units::meters_per_second_t m_newVelocity{0.0_mps};

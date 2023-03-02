@@ -17,7 +17,7 @@ void HoldArm::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void HoldArm::Execute() {
-  m_arm->setPosition(m_arm->getPosition());
+  // m_arm->setPosition(m_arm->getPosition());
 }
 
 // Called once the command ends or is interrupted.
