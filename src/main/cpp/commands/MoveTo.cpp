@@ -60,6 +60,26 @@ void MoveTo::Execute() {
 
   m_currentVelocity = m_newVelocity;
 
+
+
+
+  // Motion profile for angles
+  m_newAngleVelocity = units::math::min(
+
+    m_maxAngleVelocity,
+    units::math::min(
+
+      m_currentAngleVelocity + m_angleAcceleration * deltaTime,
+      units::math::sqrt(2 * m_angleAcceleration * units::math::fabs(units::meter_t(getRotationError().to<double>()))/100)
+
+
+    )
+  );
+
+  m_currentAngleVelocity = m_newAngleVelocity;
+
+
+
   if (units::math::fabs(getRotationError()) < 10_deg) {
     m_accumulator -= getRotationError().to<double>();
   } else {
@@ -69,7 +89,12 @@ void MoveTo::Execute() {
   // std::cout << m_accumulator <<" " <<  m_gyro->GetRotation() << std::endl;
   double angleRotationOutput = m_rotateKP*-(getRotationError()).to<double>() + m_rotateKI * m_accumulator;
 
-  m_swerveDrive->Drive(getMoveDirection(), units::meter_t(m_newVelocity.to<double>()), angleRotationOutput);
+
+  // std::cout << "Angle Velocity: " << -std::copysign(m_currentAngleVelocity.to<double>(), getRotationError().to<double>()) << " Rotation Error: " << getRotationError().to<double>() << std::endl;
+
+  if(getDistanceLeft() < 0.05_m) {m_currentVelocity = 0_mps; m_newVelocity = 0_mps; }
+
+  m_swerveDrive->Drive(getMoveDirection(), units::meter_t(m_newVelocity.to<double>()), -std::copysign(m_currentAngleVelocity.to<double>(), getRotationError().to<double>()));
 
 
 
@@ -91,6 +116,10 @@ void MoveTo::End(bool interrupted) {
 
   m_currentVelocity = 0_mps;
   m_newVelocity = 0_mps;
+
+  m_currentAngleVelocity = 0_mps;
+  m_newAngleVelocity = 0_mps;
+
   m_accumulator = 0;
   m_swerveDrive->Drive(0_rad, 0_m, 0.0);
 
@@ -104,7 +133,7 @@ void MoveTo::End(bool interrupted) {
 // Returns true when the command should end.
 bool MoveTo::IsFinished() {
 
-  bool distanceArrived = getDistanceLeft() < 0.1_m;
+  bool distanceArrived = getDistanceLeft() < 0.05_m;
   bool angleArrived = units::math::fabs(getRotationError()) < 2_deg;
 
   return distanceArrived && angleArrived;
@@ -121,7 +150,7 @@ units::degree_t MoveTo::getRotationError() {
 
 units::radian_t MoveTo::closestPathError(units::radian_t error) {
 
-    if (units::math::fabs(error) <= 90_deg) return error; // if the error is smaller than 90 deg do nothing
+    if (units::math::fabs(error) <= 180_deg) return error; // if the error is smaller than 90 deg do nothing
 
     double m_currentDirection = units::math::fabs(error)/error; // the sign of the error -1 or 1 
     

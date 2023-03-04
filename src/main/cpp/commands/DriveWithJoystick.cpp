@@ -21,8 +21,8 @@ void DriveWithJoystick::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void DriveWithJoystick::Execute() {
 
-  const double k_joystickDeadzone{0.06};
-  const double maxVelocity{3.5};
+  const double k_joystickDeadzone{0.03};
+  const double maxVelocity{3.0};
   const double maxRotationVelocity{0.9};
 
   m_swerveDrivetrain->Drive(units::radian_t(-m_joystick->GetDirectionRadians()), units::meter_t( (m_joystick->GetMagnitude() > k_joystickDeadzone) ? pow(m_joystick->GetMagnitude(), 2) * maxVelocity : 0) ,(fabs(m_joystick->GetZ()) > k_joystickDeadzone) ? ((std::signbit(m_joystick->GetZ())) ? -1 : 1) * pow(m_joystick->GetZ(), 2)*maxRotationVelocity : 0);

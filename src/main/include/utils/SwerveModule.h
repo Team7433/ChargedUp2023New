@@ -121,7 +121,7 @@ namespace iona {
 
 
         //PID values for swerve module
-        std::map<std::string, double> m_PID_P{{"P", 0.220}, {"I", 0.0007}, {"D", 0.1}}; // pivot motor PID values
+        std::map<std::string, double> m_PID_P{{"P", 0.2}, {"I", 0.0007}, {"D", 0.1}}; // pivot motor PID values
         std::map<std::string, double> m_PID_D{{"P", 0.13}, {"I", 0.0007}, {"D", 0.19}, {"F", (1023.0)/21797}}; // drive motor PID values
 
         //Falcon Motors

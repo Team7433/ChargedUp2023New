@@ -53,7 +53,7 @@ void SwerveModule::resetEncoderPosition() {
 
 void SwerveModule::Set(units::meters_per_second_t velocity) {
     //encoder velocity is in encoder counts per 100ms
-    if(velocity < 0.3_mps) {
+    if(units::math::abs(velocity) < 0.1_mps) {
         m_driveMotor->Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0); // Set the velocity
         return;
     }

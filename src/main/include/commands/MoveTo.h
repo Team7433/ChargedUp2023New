@@ -12,6 +12,9 @@
 #include <frc/Timer.h>
 #include <math.h>
 
+#include "units/angular_velocity.h"
+#include "units/angular_acceleration.h"
+
 /**
  * An example command.
  *
@@ -58,13 +61,19 @@ class MoveTo
   SwerveDrivetrain* m_swerveDrive;
   Gyro* m_gyro;
 
-  units::meters_per_second_t m_maxVelocity{1_mps};
+  units::meters_per_second_t m_maxVelocity{1.5_mps};
   units::meters_per_second_squared_t m_maxAcceleration{2.5_mps_sq};
 
 
   units::meters_per_second_t m_newVelocity{0.0_mps};
   units::meters_per_second_t m_currentVelocity{0.0_mps};
 
+
+  units::meters_per_second_squared_t m_angleAcceleration{0.5_mps_sq};
+  units::meters_per_second_t m_maxAngleVelocity{1.5_mps};
+
+  units::meters_per_second_t m_newAngleVelocity{0.0_mps};
+  units::meters_per_second_t m_currentAngleVelocity{0.0_mps};
 
   double m_rotateKP{0.015};
   double m_rotateKI{0.001};

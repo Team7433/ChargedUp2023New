@@ -20,7 +20,7 @@ void JoystickArmControl::Initialize() {}
 void JoystickArmControl::Execute() {
   if( fabs(m_joystick->GetLeftY()) < 0.02) return;
   // m_arm->setArm(std::copysign(pow(m_joystick->GetLeftY(), 2), -m_joystick->GetLeftY())*0.17);
-  m_arm->setMotionMagic(std::copysign(pow(m_joystick->GetLeftY(), 2), -m_joystick->GetLeftY())*10 + m_arm->getPosition());
+  m_arm->setMotionMagic(std::copysign(pow(m_joystick->GetLeftY(), 2), -m_joystick->GetLeftY())*4000 + m_arm->getPosition());
 
 }
 
