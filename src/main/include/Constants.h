@@ -54,5 +54,5 @@ namespace ArmConstants {
 
 namespace VisionConstants {
     constexpr double kPixelCount = 10000; // Configure this.
-    constexpr units::meter_t kDistance = 1_m;
+    constexpr units::length::meter_t kDistance = 1_m;
 }

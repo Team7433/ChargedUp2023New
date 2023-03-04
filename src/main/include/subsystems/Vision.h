@@ -18,7 +18,7 @@ class Vision : public frc2::SubsystemBase {
   units::degree_t getTargetOffsetX(){ return units::degree_t(table->GetNumber("tx", 0.0));}
   bool getTargetVisible() {return table->GetNumber("tv", 0.0);}
   bool getTXUpToDate() {return true;}
-  double getTargetPixelArea(){return;}
+  double getTargetPixelArea(){return 0;} // fix if doing gridalign
 
   
 
