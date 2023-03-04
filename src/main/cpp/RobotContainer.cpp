@@ -11,7 +11,13 @@
 RobotContainer::RobotContainer() : m_swerveDrive(&m_gyro){
   // Initialize all of your commands and subsystems here
   m_swerveDrive.SetDefaultCommand(DriveWithJoystick(&m_swerveDrive, &m_driverStick));
-  m_arm.SetDefaultCommand(JoystickArmControl(&m_arm, &m_controller));
+  
+  // OLD CONTROLLER ARM CONTROL
+  // m_arm.SetDefaultCommand(JoystickArmControl(&m_arm, &m_controller));
+
+  // SNAP TO POSITION ARM CONTROL
+  m_arm.SetDefaultCommand(SnapTo(&m_arm, &m_controller));
+
   // Configure the button bindings
   ConfigureBindings();
 }
@@ -107,51 +113,63 @@ void RobotContainer::ConfigureBindings() {
 
 
 
-  //reset gyro and odometry
+  //Swerve drive gyroscope and odometry reset.
   frc2::Trigger([this] {
     return m_driverStick.GetRawButton(2);
   }).OnTrue(frc2::InstantCommand([this]{m_gyro.Reset(); m_swerveDrive.ResetOdometry();}).ToPtr());
 
-  //re zero's swerve module pivot motors
+  //Zeroing (resetting) swerve modules.
   frc2::Trigger([this] {return m_driverStick.GetRawButton(5);}).OnTrue(
     frc2::InstantCommand([this] {m_swerveDrive.ResetSwerveModules();}).ToPtr()
   );
-
-  //unlocks the arm from brake mode
-  m_controller.Start().WhileTrue(frc2::InstantCommand([this] {m_arm.freeArm();}).ToPtr());
+  //////// CODRIVER BINDINGS /////////
 
 
-  //extend arm control
-  // m_controller.A().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kForward);}).ToPtr());
-  // m_controller.Y().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kReverse);}).ToPtr());
-
-  //claw control
+  // Robot arm claw control
   m_controller.LeftBumper().WhileTrue(frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kForward);}).ToPtr());
   m_controller.RightBumper().WhileTrue(frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kReverse);}).ToPtr());
 
-  frc2::Trigger([this] {return (m_controller.GetRightTriggerAxis() > 0.6);}).OnTrue(
-    frc2::InstantCommand([this] { std::cout << "ArmOut!\n"; m_arm.extendArm(frc::DoubleSolenoid::kForward);}).ToPtr()
-
-  );
 
 
-  frc2::Trigger([this] {return m_controller.GetLeftTriggerAxis() > 0.6;}).OnTrue(
-    frc2::InstantCommand([this] {std::cout << "Arm In!\n"; m_arm.extendArm(frc::DoubleSolenoid::kReverse);}).ToPtr()
+  //
+  // ---- OLD (BUT WORKING) CODRIVER BINDINGS ----
+  //
+  // frc2::Trigger([this] {return (m_controller.GetRightTriggerAxis() > 0.6);}).OnTrue(
+  //   frc2::InstantCommand([this] { std::cout << "ArmOut!\n"; m_arm.extendArm(frc::DoubleSolenoid::kForward);}).ToPtr()
 
-  );
+  // );
 
 
-  //Arm move to collect cone position
-  m_controller.A().WhileTrue(SetArmPosition(&m_arm, -83000).ToPtr());
+  // frc2::Trigger([this] {return m_controller.GetLeftTriggerAxis() > 0.6;}).OnTrue(
+  //   frc2::InstantCommand([this] {std::cout << "Arm In!\n"; m_arm.extendArm(frc::DoubleSolenoid::kReverse);}).ToPtr()
 
-  //Arm top cone
-  m_controller.Y().WhileTrue(SetArmPosition(&m_arm, -56000).ToPtr());
+  // );
 
-  //middle spot
-  m_controller.X().WhileTrue(SetArmPosition(&m_arm, -64000).ToPtr());
 
-  //arm down stored
-  m_controller.B().WhileTrue(SetArmPosition(&m_arm, 200).ToPtr());
+  // //Arm move to collect cone position
+  // m_controller.A().WhileTrue(SetArmPosition(&m_arm, -83000).ToPtr());
+
+  // //Arm top cone
+  // m_controller.Y().WhileTrue(SetArmPosition(&m_arm, -56000).ToPtr());
+
+  // //middle spot
+  // m_controller.X().WhileTrue(SetArmPosition(&m_arm, -64000).ToPtr());
+
+  // //arm down stored
+  // m_controller.B().WhileTrue(SetArmPosition(&m_arm, 200).ToPtr());
+  // //unlocks the arm from brake mode
+  // m_controller.Start().WhileTrue(frc2::InstantCommand([this] {m_arm.freeArm();}).ToPtr());
+
+
+  //
+  // ---- NEW CODRIVER BINDINGS
+  //
+
+
+  //Arm telescoping control.
+  m_controller.A().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kForward);}).ToPtr());
+  m_controller.Y().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kReverse);}).ToPtr());
+
 
 }
 

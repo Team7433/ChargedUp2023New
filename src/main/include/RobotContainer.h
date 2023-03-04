@@ -25,7 +25,7 @@
 #include "commands/AutoTarget.h"
 #include "commands/MoveTo.h"
 #include "commands/Wait.h"
-
+#include "commands/SnapTo.h"
 #include "commands/SetArmPosition.h"
 
 /**
