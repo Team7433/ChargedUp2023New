@@ -42,5 +42,9 @@ namespace ArmConstants {
     constexpr unsigned int kArmMotorOne = 5;
     constexpr unsigned int kArmMotorTwo = 10;
 
-    constexpr unsigned int kLimitSwitchID = 0; // Configure this
+}
+
+namespace VisionConstants {
+    constexpr double kPixelCount = 10000; // Configure this.
+    constexpr units::meter_t kDistance = 1_m;
 }
