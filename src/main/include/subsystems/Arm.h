@@ -64,8 +64,6 @@ class Arm : public frc2::SubsystemBase {
   WPI_TalonFX * m_armMotorOne = new WPI_TalonFX{kArmMotorOne};
   WPI_TalonFX * m_armMotorTwo = new WPI_TalonFX{kArmMotorTwo};
 
-  frc::DigitalInput m_limitSwitch{kLimitSwitchID};
-
 
   frc::DoubleSolenoid clawSolenoid{0, frc::PneumaticsModuleType::CTREPCM, 4, 0};
   frc::DoubleSolenoid extensionSolenoid{frc::PneumaticsModuleType::CTREPCM, 5, 1};
