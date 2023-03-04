@@ -38,4 +38,11 @@ class SnapTo
   Arm * m_arm;
   frc2::CommandXboxController * m_controller;
 
+  std::map<std::string, int> armPositions = {
+        {"Retracted", 00},
+        {"TopGrid", -56000},
+        {"MidGrid", -64000},
+        {"Collection", -83000}
+    };
+
 };

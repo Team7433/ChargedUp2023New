@@ -44,13 +44,6 @@ namespace ArmConstants {
     constexpr unsigned int kArmMotorOne = 5;
     constexpr unsigned int kArmMotorTwo = 10;
 
-    std::map<std::string, int> armPositions = {
-        {"Retracted", 00},
-        {"TopGrid", -56000},
-        {"MidGrid", -64000},
-        {"Collection", -83000}
-    };
-
 }
 
 namespace VisionConstants {

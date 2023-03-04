@@ -87,7 +87,7 @@ void MoveTo::Execute() {
   }
 
   // std::cout << m_accumulator <<" " <<  m_gyro->GetRotation() << std::endl;
-  double angleRotationOutput = m_rotateKP*-(getRotationError()).to<double>() + m_rotateKI * m_accumulator;
+  // double angleRotationOutput = m_rotateKP*-(getRotationError()).to<double>() + m_rotateKI * m_accumulator;
 
 
   // std::cout << "Angle Velocity: " << -std::copysign(m_currentAngleVelocity.to<double>(), getRotationError().to<double>()) << " Rotation Error: " << getRotationError().to<double>() << std::endl;
