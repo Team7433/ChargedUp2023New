@@ -25,7 +25,7 @@ void GridAlign::Execute() {
   double sign = m_vision->getTargetOffsetX().to<double>()/fabs(m_vision->getTargetOffsetX().to<double>()); // get the direction -1 or 1
   units::radian_t direction = (fabs(sign) == sign) ? units::radian_t(M_PI/2) : units::radian_t(3*M_PI/2);  
 
-  units::meter_t magnitude = sin(m_vision->getTargetOffsetX().to<double>()) * m_vision->getTargetPixelArea() * pow(VisionConstants::kPixelCount, -1) * VisionConstants::kDistance;
+  units::meter_t magnitude = sin(m_vision->getTargetOffsetX().to<double>()) * m_vision->getTargetPixelArea() * pow(VisionConstants::kPixelCount, -1) * 1_m;
   m_swerve->Drive(direction, magnitude, 0);
 
   

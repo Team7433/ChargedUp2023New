@@ -4,6 +4,7 @@
 
 #pragma once
 #include <map>
+#include <units/length.h>
 
 /**
  * The Constants header provides a convenient place for teams to hold robot-wide
@@ -44,7 +45,7 @@ namespace ArmConstants {
     constexpr unsigned int kArmMotorTwo = 10;
 
     std::map<std::string, int> armPositions = {
-        {"Retracted", 200},
+        {"Retracted", 00},
         {"TopGrid", -56000},
         {"MidGrid", -64000},
         {"Collection", -83000}
@@ -54,5 +55,4 @@ namespace ArmConstants {
 
 namespace VisionConstants {
     constexpr double kPixelCount = 10000; // Configure this.
-    constexpr units::length::meter_t kDistance = 1_m;
 }
