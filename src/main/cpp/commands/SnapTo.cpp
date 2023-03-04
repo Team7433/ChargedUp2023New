@@ -4,6 +4,8 @@
 
 #include "commands/SnapTo.h"
 
+using namespace ArmConstants;
+
 SnapTo::SnapTo(Arm * arm, frc2::CommandXboxController* controller) {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({arm});
@@ -15,7 +17,30 @@ SnapTo::SnapTo(Arm * arm, frc2::CommandXboxController* controller) {
 void SnapTo::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void SnapTo::Execute() {}
+void SnapTo::Execute() {
+  if (isControllerActive()){
+    m_arm->setMotionMagic(std::copysign(pow(m_controller->GetLeftY(), 2), -m_controller->GetLeftY())*4000 + m_arm->getPosition());
+    return;
+  }
+
+  auto iterator = armPositions.begin(); 
+
+  double minDifference = 10000000;
+  std::string closestPosition;
+
+  double currentArmPos = m_arm->getPosition();
+
+  while(iterator != armPositions.end()){
+    double currentDiff = fabs(iterator->second - currentArmPos);
+    if (currentDiff < minDifference){
+      minDifference = currentDiff;
+      closestPosition = iterator->first;
+    }
+  } 
+
+  m_arm->setMotionMagic(armPositions[closestPosition]);
+
+}
 
 // Called once the command ends or is interrupted.
 void SnapTo::End(bool interrupted) {}
@@ -26,5 +51,5 @@ bool SnapTo::IsFinished() {
 }
 
 bool SnapTo::isControllerActive(){
-  return true; // TODO
+  return ((m_controller->GetLeftY() < 0.02) && (m_controller->GetLeftY() > -0.02));
 }
