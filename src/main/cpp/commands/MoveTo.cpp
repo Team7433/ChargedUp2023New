@@ -92,7 +92,7 @@ void MoveTo::Execute() {
 
   // std::cout << "Angle Velocity: " << -std::copysign(m_currentAngleVelocity.to<double>(), getRotationError().to<double>()) << " Rotation Error: " << getRotationError().to<double>() << std::endl;
 
-  if(getDistanceLeft() < 0.05_m) {m_currentVelocity = 0_mps; m_newVelocity = 0_mps; }
+  if(getDistanceLeft() < 0.02_m) {m_currentVelocity = 0_mps; m_newVelocity = 0_mps; }
 
   m_swerveDrive->Drive(getMoveDirection(), units::meter_t(m_newVelocity.to<double>()), -std::copysign(m_currentAngleVelocity.to<double>(), getRotationError().to<double>()));
 
@@ -133,7 +133,7 @@ void MoveTo::End(bool interrupted) {
 // Returns true when the command should end.
 bool MoveTo::IsFinished() {
 
-  bool distanceArrived = getDistanceLeft() < 0.05_m;
+  bool distanceArrived = getDistanceLeft() < 0.02_m;
   bool angleArrived = units::math::fabs(getRotationError()) < 2_deg;
 
   return distanceArrived && angleArrived;

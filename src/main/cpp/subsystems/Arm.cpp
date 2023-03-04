@@ -44,7 +44,7 @@ void Arm::setPercentageOutput(double output) {
 
 void Arm::setMotionMagic(double position) {
 
-    if (position < -80000 || position > 0) { std::cout << "Aborted Run Motion Magic to pos: " << position << ", out of safety limit!\n"; return;}
+    if (position < -86000 || position > 0) { std::cout << "Aborted Run Motion Magic to pos: " << position << ", out of safety limit!\n"; return;}
     enableBrakeMode();
     m_motionMagicTarget = position;
     m_armMotorOne->Set(ControlMode::MotionMagic, position);

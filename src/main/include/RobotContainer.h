@@ -7,6 +7,7 @@
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/button/CommandXboxController.h>
 #include <frc2/command/SequentialCommandGroup.h>
+#include <frc2/command/ParallelCommandGroup.h>
 #include <frc/XboxController.h>
 
 #include "subsystems/Arm.h"
@@ -23,6 +24,7 @@
 #include "commands/JoystickArmControl.h"
 #include "commands/AutoTarget.h"
 #include "commands/MoveTo.h"
+#include "commands/Wait.h"
 
 #include "commands/SetArmPosition.h"
 

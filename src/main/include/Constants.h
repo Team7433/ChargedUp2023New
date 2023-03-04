@@ -18,16 +18,16 @@
 namespace DriveTrainConstants {
 
     //offset of mag encoders to starting position
-    // constexpr double kEncoderOffsetBR = 225.3;
-    // constexpr double kEncoderOffsetBL = 66.7;
-    // constexpr double kEncoderOffsetFR = 353.3;
-    // constexpr double kEncoderOffsetFL = 177.81;
+    constexpr double kEncoderOffsetBR = 225.3;
+    constexpr double kEncoderOffsetBL = 66.7;
+    constexpr double kEncoderOffsetFR = 353.3;
+    constexpr double kEncoderOffsetFL = 177.81;
 
-    //2021 bot encoder values
-    const double kEncoderOffsetFL{90.0};
-    const double kEncoderOffsetFR{84.5};
-    const double kEncoderOffsetBL{54.4};
-    const double kEncoderOffsetBR{339.1};
+    //2022 bot encoder values
+    // const double kEncoderOffsetFL{90.0};
+    // const double kEncoderOffsetFR{84.5};
+    // const double kEncoderOffsetBL{54.4};
+    // const double kEncoderOffsetBR{339.1};
 
 
 

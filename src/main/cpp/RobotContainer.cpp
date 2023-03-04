@@ -44,23 +44,65 @@ void RobotContainer::ConfigureBindings() {
   // ).ToPtr());
 
   //test of autonomous command
-  frc2::Trigger([this]{ return m_driverStick.GetRawButton(4); }).OnTrue(
+  // frc2::Trigger([this]{ return m_driverStick.GetRawButton(4); }).OnTrue(
+  //   frc2::SequentialCommandGroup(
+  //     frc2::InstantCommand([this] {m_swerveDrive.ResetOdometry();}),
+  //     SetArmPosition(&m_arm, -60000),
+  //     frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kForward);}),
+  //     MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 4.8_m, .y_pos = 0.0_m}, 0_deg),
+  //     MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 4.8_m, .y_pos = 0.10_m}, 0_deg),
+  //     SetArmPosition(&m_arm, -76000),
+  //     frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kReverse);}),
+  //     SetArmPosition(&m_arm, -50000),
+  //     MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 4.80_m, .y_pos = 0.0_m}, 180_deg),
+  //     MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0.00_m, .y_pos = 0.0_m}, 180_deg),
+  //     frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kForward);})
+
+
+  //   ).ToPtr());
+
+  frc2::Trigger([this]{ return m_driverStick.GetRawButton(6); }).OnTrue(
     frc2::SequentialCommandGroup(
       frc2::InstantCommand([this] {m_swerveDrive.ResetOdometry();}),
-      SetArmPosition(&m_arm, -60000),
+      SetArmPosition(&m_arm, -54000),
       frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kForward);}),
-      MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 4.8_m, .y_pos = 0.0_m}, 0_deg),
-      MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 4.8_m, .y_pos = 0.10_m}, 0_deg),
-      SetArmPosition(&m_arm, -76000),
+      MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0.0_m, .y_pos = -0.7_m}, 180_deg),
+      MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 4.8_m, .y_pos = -0.7_m}, 0_deg),
+      SetArmPosition(&m_arm, -78000),
       frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kReverse);}),
-      SetArmPosition(&m_arm, -50000),
-      MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 4.80_m, .y_pos = 0.0_m}, 180_deg),
-      MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0.00_m, .y_pos = 0.0_m}, 180_deg),
+      SetArmPosition(&m_arm, -55000),
+      MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0.0_m, .y_pos = -0.7_m}, 180_deg),
       frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kForward);})
 
 
     ).ToPtr());
 
+  frc2::Trigger([this]{ return m_driverStick.GetRawButton(4); }).OnTrue(
+    frc2::SequentialCommandGroup(
+      frc2::InstantCommand([this] {m_swerveDrive.ResetOdometry();}),
+      SetArmPosition(&m_arm, -58000),
+      frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::kForward);}),
+      Wait(1.5_s),
+      frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kForward);}),
+      Wait(0.5_s),
+      frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::kReverse);}),
+      Wait(1.5_s),
+      frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kReverse);}),
+      frc2::ParallelCommandGroup(
+        frc2::SequentialCommandGroup(
+
+        SetArmPosition(&m_arm, -1000),
+        frc2::InstantCommand([this] {m_arm.freeArm();})
+
+        ),
+      MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 2.55_m, .y_pos = 0.0_m}, 180_deg, MoveToConfig{ .maxVelocity = 0.4_mps, .Acceleration = 0.25_mps_sq})
+      )
+
+
+      
+
+
+    ).ToPtr());
 
 
 
@@ -80,18 +122,36 @@ void RobotContainer::ConfigureBindings() {
 
 
   //extend arm control
-  m_controller.A().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kForward);}).ToPtr());
-  m_controller.Y().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kReverse);}).ToPtr());
+  // m_controller.A().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kForward);}).ToPtr());
+  // m_controller.Y().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kReverse);}).ToPtr());
 
   //claw control
   m_controller.LeftBumper().WhileTrue(frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kForward);}).ToPtr());
   m_controller.RightBumper().WhileTrue(frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kReverse);}).ToPtr());
 
-  //Arm move to collect cone position
-  m_controller.X().WhileTrue(SetArmPosition(&m_arm, -78000).ToPtr());
+  frc2::Trigger([this] {return (m_controller.GetRightTriggerAxis() > 0.6);}).OnTrue(
+    frc2::InstantCommand([this] { std::cout << "ArmOut!\n"; m_arm.extendArm(frc::DoubleSolenoid::kForward);}).ToPtr()
 
-  //Arm hold up cone
-  m_controller.B().WhileTrue(SetArmPosition(&m_arm, -50000).ToPtr());
+  );
+
+
+  frc2::Trigger([this] {return m_controller.GetLeftTriggerAxis() > 0.6;}).OnTrue(
+    frc2::InstantCommand([this] {std::cout << "Arm In!\n"; m_arm.extendArm(frc::DoubleSolenoid::kReverse);}).ToPtr()
+
+  );
+
+
+  //Arm move to collect cone position
+  m_controller.A().WhileTrue(SetArmPosition(&m_arm, -83000).ToPtr());
+
+  //Arm top cone
+  m_controller.Y().WhileTrue(SetArmPosition(&m_arm, -56000).ToPtr());
+
+  //middle spot
+  m_controller.X().WhileTrue(SetArmPosition(&m_arm, -64000).ToPtr());
+
+  //arm down stored
+  m_controller.B().WhileTrue(SetArmPosition(&m_arm, 200).ToPtr());
 
 }
 
