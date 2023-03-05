@@ -19,13 +19,13 @@ void SnapTo::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void SnapTo::Execute() {
-  if (isControllerActive()){
+  if (isControllerActive()){ // If controller is active, do manual control
     m_arm->setMotionMagic(std::copysign(pow(m_controller->GetLeftY(), 2), -m_controller->GetLeftY())*4000 + m_arm->getPosition());
     return;
   }
 
 
-  if (m_snap) {
+  if (m_snap) { // Only if we are in snap mode
   auto iterator = armPositions.begin(); 
 
   double minDifference = 10000000;
@@ -36,12 +36,12 @@ void SnapTo::Execute() {
   while(iterator != armPositions.end()){
     double currentDiff = fabs(iterator->second - currentArmPos);
     if (currentDiff < minDifference){
-      minDifference = currentDiff;
+      minDifference = currentDiff; // Finding closest position;
       closestPosition = iterator->first;
     }
   } 
 
-  m_arm->setMotionMagic(armPositions[closestPosition]);
+  m_arm->setMotionMagic(armPositions[closestPosition]); // Set to closest position;
 
   }
 
