@@ -136,16 +136,6 @@ void RobotContainer::ConfigureBindings() {
   //
   // ---- OLD (BUT WORKING) CODRIVER BINDINGS ----
   //
-  // frc2::Trigger([this] {return (m_controller.GetRightTriggerAxis() > 0.6);}).OnTrue(
-  //   frc2::InstantCommand([this] { std::cout << "ArmOut!\n"; m_arm.extendArm(frc::DoubleSolenoid::kForward);}).ToPtr()
-
-  // );
-
-
-  // frc2::Trigger([this] {return m_controller.GetLeftTriggerAxis() > 0.6;}).OnTrue(
-  //   frc2::InstantCommand([this] {std::cout << "Arm In!\n"; m_arm.extendArm(frc::DoubleSolenoid::kReverse);}).ToPtr()
-
-  // );
 
 
   // //Arm move to collect cone position
@@ -160,7 +150,7 @@ void RobotContainer::ConfigureBindings() {
   // //arm down stored
   // m_controller.B().WhileTrue(SetArmPosition(&m_arm, 200).ToPtr());
   // //unlocks the arm from brake mode
-  // m_controller.Start().WhileTrue(frc2::InstantCommand([this] {m_arm.freeArm();}).ToPtr());
+  m_controller.Start().WhileTrue(frc2::InstantCommand([this] {m_arm.freeArm();}).ToPtr());
 
 
   //
@@ -172,8 +162,7 @@ void RobotContainer::ConfigureBindings() {
   m_controller.A().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kForward);}).ToPtr());
   m_controller.Y().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kReverse);}).ToPtr());
 
-  m_controller.X().WhileTrue(SnapTo(&m_arm, &m_controller).ToPtr()); // Snap to the closest known position;
-  // m_controller.X().WhileTrue(frc2::InstantCommand([this]{std::cout << "Working" << std::endl;}).ToPtr());
+  m_controller.X().WhileTrue(SnapTo(&m_arm, &m_controller).ToPtr()); // Snap to the closest known position
 
 }
 
