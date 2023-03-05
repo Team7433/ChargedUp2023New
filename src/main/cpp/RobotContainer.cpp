@@ -13,10 +13,10 @@ RobotContainer::RobotContainer() : m_swerveDrive(&m_gyro){
   m_swerveDrive.SetDefaultCommand(DriveWithJoystick(&m_swerveDrive, &m_driverStick));
   
   // OLD CONTROLLER ARM CONTROL
-  // m_arm.SetDefaultCommand(JoystickArmControl(&m_arm, &m_controller));
+  m_arm.SetDefaultCommand(JoystickArmControl(&m_arm, &m_controller));
 
   // SNAP TO POSITION ARM CONTROL
-  m_arm.SetDefaultCommand(SnapTo(&m_arm, &m_controller, false));
+  // m_arm.SetDefaultCommand(SnapTo(&m_arm, &m_controller, false));
 
   // Configure the button bindings
   ConfigureBindings();
@@ -172,7 +172,8 @@ void RobotContainer::ConfigureBindings() {
   m_controller.A().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kForward);}).ToPtr());
   m_controller.Y().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kReverse);}).ToPtr());
 
-  m_controller.X().WhileTrue(SnapTo(&m_arm, &m_controller, true).ToPtr()); // Snap to the closest known position;
+  m_controller.X().WhileTrue(SnapTo(&m_arm, &m_controller).ToPtr()); // Snap to the closest known position;
+  // m_controller.X().WhileTrue(frc2::InstantCommand([this]{std::cout << "Working" << std::endl;}).ToPtr());
 
 }
 

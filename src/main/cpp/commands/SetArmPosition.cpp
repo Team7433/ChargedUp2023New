@@ -20,7 +20,7 @@ SetArmPosition::SetArmPosition(Arm* arm, double targetPosition) {
 // Called when the command is initially scheduled.
 void SetArmPosition::Initialize() {
 
-  m_arm->setMotionMagic(m_targetPosition);
+  // m_arm->setMotionMagic(m_targetPosition);
   std::cout << "Set Arm Position to " << m_targetPosition << " encoder counts " << std::endl;
 
 
