@@ -22,7 +22,7 @@
 class SnapTo
     : public frc2::CommandHelper<frc2::CommandBase, SnapTo> {
  public:
-  SnapTo(Arm * arm, frc2::CommandXboxController* controller);
+  SnapTo(Arm * arm, frc2::CommandXboxController* controller, bool snap);
 
   void Initialize() override;
 
@@ -37,6 +37,7 @@ class SnapTo
  private:
   Arm * m_arm;
   frc2::CommandXboxController * m_controller;
+  bool m_snap;
 
   std::map<std::string, int> armPositions = {
         {"Retracted", 00},

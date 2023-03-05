@@ -16,7 +16,7 @@ RobotContainer::RobotContainer() : m_swerveDrive(&m_gyro){
   // m_arm.SetDefaultCommand(JoystickArmControl(&m_arm, &m_controller));
 
   // SNAP TO POSITION ARM CONTROL
-  m_arm.SetDefaultCommand(SnapTo(&m_arm, &m_controller));
+  m_arm.SetDefaultCommand(SnapTo(&m_arm, &m_controller, false));
 
   // Configure the button bindings
   ConfigureBindings();
@@ -131,6 +131,8 @@ void RobotContainer::ConfigureBindings() {
 
 
 
+
+
   //
   // ---- OLD (BUT WORKING) CODRIVER BINDINGS ----
   //
@@ -170,6 +172,7 @@ void RobotContainer::ConfigureBindings() {
   m_controller.A().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kForward);}).ToPtr());
   m_controller.Y().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kReverse);}).ToPtr());
 
+  m_controller.X().WhileTrue(SnapTo(&m_arm, &m_controller, true).ToPtr()); // Snap to the closest known position;
 
 }
 

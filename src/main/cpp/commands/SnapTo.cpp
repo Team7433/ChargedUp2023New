@@ -6,11 +6,12 @@
 
 using namespace ArmConstants;
 
-SnapTo::SnapTo(Arm * arm, frc2::CommandXboxController* controller) {
+SnapTo::SnapTo(Arm * arm, frc2::CommandXboxController* controller, bool snap) {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({arm});
   m_arm = arm;
   m_controller = controller;
+  m_snap = snap;
 }
 
 // Called when the command is initially scheduled.
@@ -23,6 +24,8 @@ void SnapTo::Execute() {
     return;
   }
 
+
+  if (m_snap) {
   auto iterator = armPositions.begin(); 
 
   double minDifference = 10000000;
@@ -40,6 +43,8 @@ void SnapTo::Execute() {
 
   m_arm->setMotionMagic(armPositions[closestPosition]);
 
+  }
+
 }
 
 // Called once the command ends or is interrupted.
@@ -51,5 +56,5 @@ bool SnapTo::IsFinished() {
 }
 
 bool SnapTo::isControllerActive(){
-  return ((m_controller->GetLeftY() < 0.02) && (m_controller->GetLeftY() > -0.02));
+  return ((m_controller->GetLeftY() > 0.02) || (m_controller->GetLeftY() < -0.02));
 }
