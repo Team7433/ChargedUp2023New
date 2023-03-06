@@ -22,8 +22,8 @@ void DriveWithJoystick::Initialize() {}
 void DriveWithJoystick::Execute() {
 
   const double k_joystickDeadzone{0.03};
-  double maxVelocity{3.0};
-  double maxRotationVelocity{0.9};
+  double maxVelocity{5.0};
+  double maxRotationVelocity{1.3};
 
   if(m_joystick->GetRawButton(1)) {
     maxVelocity = maxVelocity/4;

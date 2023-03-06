@@ -35,15 +35,23 @@ class SnapTo
   bool isControllerActive();
 
  private:
-  Arm * m_arm;
-  frc2::CommandXboxController * m_controller;
-  double m_target;
 
-  std::map<std::string, int> armPositions = {
-        {"Retracted", 00},
+    Arm * m_arm;
+    frc2::CommandXboxController * m_controller;
+    double m_target;
+
+
+    std::map<std::string, int> armPositions = {
+        {"Retracted", 0},
         {"TopGrid", -56000},
         {"MidGrid", -64000},
         {"Collection", -83000}
     };
 
 };
+
+
+
+
+
+

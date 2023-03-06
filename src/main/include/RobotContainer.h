@@ -9,6 +9,7 @@
 #include <frc2/command/SequentialCommandGroup.h>
 #include <frc2/command/ParallelCommandGroup.h>
 #include <frc/XboxController.h>
+#include <frc/DigitalOutput.h>
 
 #include "subsystems/Arm.h"
 #include "subsystems/Compressor.h"
@@ -62,6 +63,11 @@ class RobotContainer {
   SwerveDrivetrain m_swerveDrive;
   Gyro m_gyro;
   Vision m_vision;
+
+  frc::DigitalOutput m_test{0};
+  frc::DigitalInput m_sense{1};
+
+
   
   
 

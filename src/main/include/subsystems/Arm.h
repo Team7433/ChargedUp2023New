@@ -66,7 +66,7 @@ class Arm : public frc2::SubsystemBase {
 
 
   frc::DoubleSolenoid clawSolenoid{0, frc::PneumaticsModuleType::CTREPCM, 4, 0};
-  frc::DoubleSolenoid extensionSolenoid{frc::PneumaticsModuleType::CTREPCM, 5, 1};
+  frc::DoubleSolenoid extensionSolenoid{0, frc::PneumaticsModuleType::CTREPCM, 5, 1};
 
   
 };
