@@ -30,19 +30,18 @@ TwoItemAutoRight::TwoItemAutoRight(Arm * m_arm, SwerveDrivetrain * m_swerveDrive
       MoveTo(m_swerveDrive, m_gyro, iona::coordinate{.x_pos = 4.5_m, .y_pos = -0.75_m}, 0_deg),
 
       frc2::ParallelCommandGroup( // Put arm down and go to cube simultaneously
-      MoveTo(m_swerveDrive, m_gyro, iona::coordinate{.x_pos = 4.65_m, .y_pos = -0.25_m}, 0_deg),
+      MoveTo(m_swerveDrive, m_gyro, iona::coordinate{.x_pos = 4.75_m, .y_pos = -0.25_m}, 0_deg),
       SetArmPosition(m_arm, -83000)), // Arm to collect
 
       frc2::InstantCommand([this, m_arm]{ m_arm->setClaw(frc::DoubleSolenoid::kReverse);}), // Collect cube
 
-      frc2::ParallelCommandGroup( // Set arm up to above high cube position and move simultaneously
-      SetArmPosition(m_arm, -54000),
-      MoveTo(m_swerveDrive, m_gyro, iona::coordinate{.x_pos = 4.65_m, .y_pos = -0.5_m}, 0_deg,  MoveToConfig{.maxVelocity = 1.5_mps, .Acceleration = 2.5_mps_sq})),
+      MoveTo(m_swerveDrive, m_gyro, iona::coordinate{.x_pos = 4.65_m, .y_pos = -0.5_m}, 0_deg,  MoveToConfig{.maxVelocity = 1.5_mps, .Acceleration = 2.5_mps_sq}),
       
-      MoveTo(m_swerveDrive, m_gyro, iona::coordinate{.x_pos = 0.2_m, .y_pos = -0.65_m}, 180_deg), // Move to grids
-      SetArmPosition(m_arm, -56000), // Set to high rung position  
+      frc2::ParallelCommandGroup(
+      SetArmPosition(m_arm, -56000),
+      MoveTo(m_swerveDrive, m_gyro, iona::coordinate{.x_pos = 0.1_m, .y_pos = -0.65_m}, 180_deg)), // Move to grids
       frc2::InstantCommand([this, m_arm]{ m_arm->extendArm(frc::DoubleSolenoid::kForward);}), // Extend arm
-      Wait(0.4_s), // Wait for arm to extend
+      Wait(0.45_s), // Wait for arm to extend
       frc2::InstantCommand([this, m_arm]{ m_arm->setClaw(frc::DoubleSolenoid::kForward);}) // Drop cone
 
 
