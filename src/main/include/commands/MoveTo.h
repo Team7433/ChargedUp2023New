@@ -61,8 +61,8 @@ class MoveTo
   SwerveDrivetrain* m_swerveDrive;
   Gyro* m_gyro;
 
-  units::meters_per_second_t m_maxVelocity{1.5_mps};
-  units::meters_per_second_squared_t m_maxAcceleration{2.5_mps_sq};
+  units::meters_per_second_t m_maxVelocity{4_mps};
+  units::meters_per_second_squared_t m_maxAcceleration{3_mps_sq};
 
 
   units::meters_per_second_t m_newVelocity{0.0_mps};

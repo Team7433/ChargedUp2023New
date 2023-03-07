@@ -83,6 +83,54 @@ void RobotContainer::ConfigureBindings() {
 
     ).ToPtr());
 
+
+  frc2::Trigger([this]{ return m_driverStick.GetRawButton(7); }).OnTrue(
+    frc2::SequentialCommandGroup(
+      frc2::InstantCommand([this] { m_swerveDrive.ResetOdometry();}), // Reset Odometry
+      SetArmPosition(&m_arm, -52000), // Set to high rung position  
+      frc2::InstantCommand([this]{ m_arm.extendArm(frc::DoubleSolenoid::kForward);}), // Extend arm
+      Wait(0.2_s),
+      SetArmPosition(&m_arm, -56000),
+      frc2::InstantCommand([this]{ m_arm.setClaw(frc::DoubleSolenoid::kForward);}), // Drop cone
+      frc2::InstantCommand([this]{m_arm.extendArm(frc::DoubleSolenoid::kReverse);}), // Arm back
+      Wait(0.1_s),
+
+      frc2::ParallelCommandGroup(
+      SetArmPosition(&m_arm, -48000), // Arm up
+      MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0.5_m, .y_pos = -0.75_m}, 180_deg, MoveToConfig{.maxVelocity = 2.5_mps, .Acceleration = 2.5_mps_sq})),
+
+      MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 4.5_m, .y_pos = -0.75_m}, 0_deg),
+
+      frc2::ParallelCommandGroup(
+      MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 4.65_m, .y_pos = -0.25_m}, 0_deg),
+      SetArmPosition(&m_arm, -83000)),
+
+      frc2::InstantCommand([this]{ m_arm.setClaw(frc::DoubleSolenoid::kReverse);}),
+      frc2::ParallelCommandGroup(
+      SetArmPosition(&m_arm, -54000),
+      MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 4.65_m, .y_pos = -0.5_m}, 0_deg,  MoveToConfig{.maxVelocity = 1.5_mps, .Acceleration = 2.5_mps_sq})),
+      MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0.2_m, .y_pos = -0.65_m}, 180_deg),
+      SetArmPosition(&m_arm, -56000), // Set to high rung position  
+      frc2::InstantCommand([this]{ m_arm.extendArm(frc::DoubleSolenoid::kForward);}), // Extend arm
+      Wait(0.4_s),
+      frc2::InstantCommand([this]{ m_arm.setClaw(frc::DoubleSolenoid::kForward);}) // Drop cone
+      // frc2::InstantCommand([this]{m_arm.extendArm(frc::DoubleSolenoid::kReverse);}),
+      // SetArmPosition(&m_arm, -45000)
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ).ToPtr());
+
   frc2::Trigger([this]{ return m_driverStick.GetRawButton(4); }).OnTrue(
     frc2::SequentialCommandGroup(
       frc2::InstantCommand([this] {m_swerveDrive.ResetOdometry();}),

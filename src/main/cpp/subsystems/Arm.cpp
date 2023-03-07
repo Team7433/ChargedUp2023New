@@ -15,7 +15,7 @@ Arm::Arm(){
 
     //motion 
     m_armMotorOne->ConfigMotionAcceleration(3500, 10);
-    m_armMotorOne->ConfigMotionCruiseVelocity(9000, 10);
+    m_armMotorOne->ConfigMotionCruiseVelocity(10000, 10);
 
 }
 
@@ -75,10 +75,6 @@ double Arm::getMotionMagicTargetPosition() {
 }
 
 void Arm::freeArm() {
-    m_armMotorOne->SetNeutralMode(motorcontrol::NeutralMode::Coast);
-    m_armMotorTwo->SetNeutralMode(motorcontrol::NeutralMode::Coast);
-
-
     m_armMotorOne->Set(ControlMode::PercentOutput, 0.0);
 
 }
