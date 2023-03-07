@@ -112,9 +112,7 @@ void RobotContainer::ConfigureBindings() {
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
   switch (autoSelecter.GetSelected()){
-    case 1: return TwoItemAutoRight(&m_arm, &m_swerveDrive, &m_gyro)
-    break;
-
+    case 1: return TwoItemAutoRight(&m_arm, &m_swerveDrive, &m_gyro).ToPtr();
   }
 
 }

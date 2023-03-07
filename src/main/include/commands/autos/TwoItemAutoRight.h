@@ -15,7 +15,6 @@
 #include <frc2/command/ParallelCommandGroup.h>
 #include "commands/MoveTo.h"
 #include "commands/Wait.h"
-#include 
 
 class TwoItemAutoRight
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
