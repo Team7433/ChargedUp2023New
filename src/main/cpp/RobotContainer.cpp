@@ -14,9 +14,12 @@ RobotContainer::RobotContainer() : m_swerveDrive(&m_gyro){
   
   m_arm.SetDefaultCommand(JoystickArmControl(&m_arm, &m_controller));
 
+  // -- AUTOS --
+  frc::SmartDashboard::PutData(&autoSelecter);
+  autoSelecter.AddOption("2Right", 1);
+  autoSelecter.AddOption("1MidChargeStation", 2);
+  // -- AUTOS --
 
-
-  // Configure the button bindings
   ConfigureBindings();
 }
 
@@ -108,5 +111,10 @@ void RobotContainer::ConfigureBindings() {
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
-  return frc2::CommandPtr{nullptr};
+  switch (autoSelecter.GetSelected()){
+    case 1: return TwoItemAutoRight(&m_arm, &m_swerveDrive, &m_gyro)
+    break;
+
+  }
+
 }

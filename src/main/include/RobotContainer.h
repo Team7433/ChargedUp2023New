@@ -10,6 +10,7 @@
 #include <frc2/command/ParallelCommandGroup.h>
 #include <frc/XboxController.h>
 #include <frc/DigitalOutput.h>
+#include <frc/smartdashboard/SendableChooser.h>
 
 #include "subsystems/Arm.h"
 #include "subsystems/Compressor.h"
@@ -28,6 +29,7 @@
 #include "commands/Wait.h"
 #include "commands/SnapTo.h"
 #include "commands/SetArmPosition.h"
+#include "commands/autos/TwoItemAutoRight.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -66,6 +68,8 @@ class RobotContainer {
 
   frc::DigitalOutput m_test{0};
   frc::DigitalInput m_sense{1};
+
+  frc::SendableChooser<int> autoSelecter;
 
 
   
