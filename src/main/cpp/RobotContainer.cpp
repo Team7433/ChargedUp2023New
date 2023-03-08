@@ -36,32 +36,6 @@ void RobotContainer::ConfigureBindings() {
   //   return m_driverStick.GetRawButton(1);
   // }).OnTrue(AutoTarget(&m_swerveDrive, &m_gyro, &m_vision, &m_driverStick, &m_driverStick).ToPtr());
 
-  frc2::Trigger([this]{ return m_driverStick.GetRawButton(4); }).OnTrue(
-    frc2::SequentialCommandGroup(
-      frc2::InstantCommand([this] {m_swerveDrive.ResetOdometry();}),
-      SetArmPosition(&m_arm, -58000),
-      frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::kForward);}),
-      Wait(1.5_s),
-      frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kForward);}),
-      Wait(0.5_s),
-      frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::kReverse);}),
-      Wait(1.5_s),
-      frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kReverse);}),
-      frc2::ParallelCommandGroup(
-        frc2::SequentialCommandGroup(
-
-        SetArmPosition(&m_arm, -1000),
-        frc2::InstantCommand([this] {m_arm.freeArm();})
-
-        ),
-      MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 2.55_m, .y_pos = 0.0_m}, 180_deg, MoveToConfig{ .maxVelocity = 0.4_mps, .Acceleration = 0.25_mps_sq})
-      )
-
-
-      
-
-
-    ).ToPtr());
 
 
 
@@ -113,6 +87,7 @@ frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
   switch (autoSelecter.GetSelected()){
     case 1: return TwoItemAutoRight(&m_arm, &m_swerveDrive, &m_gyro).ToPtr();
+    case 2: return OneItemMid(&m_arm, &m_swerveDrive, &m_gyro).ToPtr();
   }
 
 }

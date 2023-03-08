@@ -30,6 +30,7 @@
 #include "commands/SnapTo.h"
 #include "commands/SetArmPosition.h"
 #include "commands/autos/TwoItemAutoRight.h"
+#include "commands/autos/OneItemMid.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since

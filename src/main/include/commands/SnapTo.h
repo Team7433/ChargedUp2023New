@@ -43,9 +43,9 @@ class SnapTo
 
     std::map<std::string, int> armPositions = {
         {"Retracted", 0},
-        {"TopGrid", -56000},
-        {"MidGrid", -64000},
-        {"Collection", -83000}
+        {"TopGrid", -54000},
+        {"MidGrid", -62000},
+        {"Collection", -77900}
     };
 
 };

@@ -21,17 +21,17 @@ Arm::Arm(){
 
 // This method will be called once per scheduler run
 void Arm::Periodic() {
-    frc::SmartDashboard::PutNumber("Arm/Position", m_armMotorOne->GetSelectedSensorPosition());
+    frc::SmartDashboard::PutNumber("ArmPos", m_armMotorOne->GetSelectedSensorPosition());
 
-    if(m_armMotorOne->GetControlMode() == ControlMode::Position || m_armMotorOne->GetControlMode() == ControlMode::MotionMagic) {
-        frc::SmartDashboard::PutNumber("Arm/TargetPosition", m_armMotorOne->GetClosedLoopTarget());
-        frc::SmartDashboard::PutNumber("Arm/Error", m_armMotorOne->GetClosedLoopError());
-    }
+    // if(m_armMotorOne->GetControlMode() == ControlMode::Position || m_armMotorOne->GetControlMode() == ControlMode::MotionMagic) {
+    //     frc::SmartDashboard::PutNumber("Arm/TargetPosition", m_armMotorOne->GetClosedLoopTarget());
+    //     frc::SmartDashboard::PutNumber("Arm/Error", m_armMotorOne->GetClosedLoopError());
+    // }
 
-    if (m_armMotorOne->GetControlMode() == ControlMode::MotionMagic) {
-        frc::SmartDashboard::PutNumber("Arm/MotionMagicTarget", getActiveTrajectoryPosition());
-        frc::SmartDashboard::PutBoolean("Arm/MotionMagicComplete", m_motionMagicTarget == getActiveTrajectoryPosition());
-    }
+    // if (m_armMotorOne->GetControlMode() == ControlMode::MotionMagic) {
+    //     frc::SmartDashboard::PutNumber("Arm/MotionMagicTarget", getActiveTrajectoryPosition());
+    //     frc::SmartDashboard::PutBoolean("Arm/MotionMagicComplete", m_motionMagicTarget == getActiveTrajectoryPosition());
+    // }
     
 
 }
