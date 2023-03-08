@@ -71,14 +71,6 @@ void RobotContainer::ConfigureBindings() {
 
   m_controller.X().WhileTrue(SnapTo(&m_arm, &m_controller).ToPtr()); // Snap to the closest known position
 
-  frc2::Trigger([this]{
-    return m_sense.Get();
-  }).OnTrue(frc2::InstantCommand([this]{m_test.Set(true);}).ToPtr());
-
-  frc2::Trigger([this]{
-    return !(m_sense.Get());
-  }).OnTrue(frc2::InstantCommand([this]{m_test.Set(false);}).ToPtr());
-
 
 
 }
