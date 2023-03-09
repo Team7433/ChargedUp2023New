@@ -18,6 +18,7 @@ RobotContainer::RobotContainer() : m_swerveDrive(&m_gyro){
   frc::SmartDashboard::PutData(&autoSelecter);
   autoSelecter.AddOption("2Right", 1);
   autoSelecter.AddOption("1MidChargeStation", 2);
+  autoSelecter.AddOption("2RightB", 3);
   // -- AUTOS --
 
   ConfigureBindings();
@@ -80,6 +81,7 @@ frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   switch (autoSelecter.GetSelected()){
     case 1: return TwoItemAutoRight(&m_arm, &m_swerveDrive, &m_gyro).ToPtr();
     case 2: return OneItemMid(&m_arm, &m_swerveDrive, &m_gyro).ToPtr();
+    case 3: return TwoItemAutoRightTwo(&m_arm, &m_swerveDrive, &m_gyro).ToPtr();
   }
 
 }

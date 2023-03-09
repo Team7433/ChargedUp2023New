@@ -31,6 +31,7 @@
 #include "commands/SetArmPosition.h"
 #include "commands/autos/TwoItemAutoRight.h"
 #include "commands/autos/OneItemMid.h"
+#include "commands/autos/TwoItemAutoRightTwo.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
