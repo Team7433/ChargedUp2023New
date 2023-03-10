@@ -7,20 +7,15 @@
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/SequentialCommandGroup.h>
 
-#include <frc2/command/InstantCommand.h>
 #include "subsystems/SwerveDrivetrain.h"
-#include "commands/SetArmPosition.h"
-#include <frc/DoubleSolenoid.h>
-#include "subsystems/Arm.h"
-#include <frc2/command/ParallelCommandGroup.h>
 #include "commands/MoveTo.h"
 #include "commands/Wait.h"
-#include "commands/BotBalance.h"
+#include "subsystems/Gyro.h"
 
 
-class OneItemMid
+class LeaveCommunityLeft
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
-                                 OneItemMid> {
+                                 LeaveCommunityLeft> {
  public:
-  OneItemMid(Arm * m_arm, SwerveDrivetrain * m_swerveDrive, Gyro * m_gyro);
+  LeaveCommunityLeft(SwerveDrivetrain * m_swerveDrive, Gyro * m_gyro);
 };

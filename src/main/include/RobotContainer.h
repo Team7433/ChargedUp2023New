@@ -28,10 +28,14 @@
 #include "commands/MoveTo.h"
 #include "commands/Wait.h"
 #include "commands/SnapTo.h"
+#include "commands/BotBalance.h"
 #include "commands/SetArmPosition.h"
+
 #include "commands/autos/TwoItemAutoRight.h"
 #include "commands/autos/OneItemMid.h"
 #include "commands/autos/TwoItemAutoRightTwo.h"
+#include "commands/autos/LeaveCommunityLeft.h"
+#include "commands/autos/OneItemEdge.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -67,10 +71,6 @@ class RobotContainer {
   SwerveDrivetrain m_swerveDrive;
   Gyro m_gyro;
   Vision m_vision;
-
-  frc::DigitalOutput m_test{0};
-  frc::DigitalInput m_sense{1};
-
 
   frc::SendableChooser<int> autoSelecter;
 

@@ -24,10 +24,10 @@ TwoItemAutoRight::TwoItemAutoRight(Arm * m_arm, SwerveDrivetrain * m_swerveDrive
 
       frc2::ParallelCommandGroup( // Set arm vertical and move simultaneously
       SetArmPosition(m_arm, -48000), // Arm up
-      MoveTo(m_swerveDrive, m_gyro, iona::coordinate{.x_pos = 0.5_m, .y_pos = -0.75_m}, 180_deg, MoveToConfig{.maxVelocity = 2.5_mps, .Acceleration = 2.5_mps_sq})),
+      MoveTo(m_swerveDrive, m_gyro, iona::coordinate{.x_pos = 0.5_m, .y_pos = -1_m}, 180_deg, MoveToConfig{.maxVelocity = 2.5_mps, .Acceleration = 2.5_mps_sq})),
 
       // Go near next cube
-      MoveTo(m_swerveDrive, m_gyro, iona::coordinate{.x_pos = 4.5_m, .y_pos = -0.75_m}, 0_deg),
+      MoveTo(m_swerveDrive, m_gyro, iona::coordinate{.x_pos = 4.5_m, .y_pos = -0.1_m}, 0_deg),
 
       frc2::ParallelCommandGroup( // Put arm down and go to cube simultaneously
       MoveTo(m_swerveDrive, m_gyro, iona::coordinate{.x_pos = 4.75_m, .y_pos = -0.25_m}, 0_deg),

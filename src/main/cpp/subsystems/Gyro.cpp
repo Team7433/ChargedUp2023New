@@ -12,6 +12,7 @@ void Gyro::Periodic() {
 
     // std::cout << "gyro " << GetRotationChange() << std::endl;
 
-    frc::SmartDashboard::PutNumber("Gyro Angle: ", GetRotation());
+    // frc::SmartDashboard::PutNumber("Gyro Angle: ", GetRotation());
+    // std::cout << "Roll" << GetRoll().to<double>() << std::endl;
 
 }

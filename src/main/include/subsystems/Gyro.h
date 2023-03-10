@@ -7,7 +7,7 @@
 #include <frc2/command/SubsystemBase.h>
 
 #include <frc/smartdashboard/SmartDashboard.h>
-
+#include <units/angle.h>
 #include <AHRS.h>
 #include <frc/SPI.h>
 #include <iostream>
@@ -18,6 +18,7 @@ class Gyro : public frc2::SubsystemBase {
 
   double GetRotation() {return -gyro.GetYaw();}
   double GetRotationChange() {return -gyro.GetRate();}
+  units::degree_t GetRoll() {return units::degree_t(gyro.GetRoll());}
   void Reset(){gyro.Reset(); std::cout << "gyro reset!!!" << std::endl;}
   /**
    * Will be called periodically whenever the CommandScheduler runs.

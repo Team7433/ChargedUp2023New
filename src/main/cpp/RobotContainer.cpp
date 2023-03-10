@@ -16,9 +16,12 @@ RobotContainer::RobotContainer() : m_swerveDrive(&m_gyro){
 
   // -- AUTOS --
   frc::SmartDashboard::PutData(&autoSelecter);
-  autoSelecter.AddOption("2Right", 1);
+  autoSelecter.AddOption("2Right", 1); // Red
   autoSelecter.AddOption("1MidChargeStation", 2);
-  autoSelecter.AddOption("2RightB", 3);
+  autoSelecter.AddOption("2RightB", 3); // Blue
+  autoSelecter.AddOption("LeaveCommunity", 4);
+  autoSelecter.AddOption("NoAuto", 5);
+  autoSelecter.AddOption("1ItemEdge", 6); 
   // -- AUTOS --
 
   ConfigureBindings();
@@ -28,8 +31,11 @@ void RobotContainer::ConfigureBindings() {
   // Configure your trigger bindings here
 
 
-  frc2::Trigger([this] {return m_driverStick.GetRawButton(3);}).OnTrue(MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0_m, .y_pos = 0_m}, 0_deg).ToPtr());
+  // frc2::Trigger([this] {return m_driverStick.GetRawButton(3);}).OnTrue(MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0_m, .y_pos = 0_m}, 0_deg).ToPtr());
 
+  frc2::Trigger([this] {
+    return m_driverStick.GetRawButton(3);
+  }).OnTrue(BotBalance(&m_swerveDrive, &m_gyro).ToPtr());
 
 
 
@@ -82,6 +88,10 @@ frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
     case 1: return TwoItemAutoRight(&m_arm, &m_swerveDrive, &m_gyro).ToPtr();
     case 2: return OneItemMid(&m_arm, &m_swerveDrive, &m_gyro).ToPtr();
     case 3: return TwoItemAutoRightTwo(&m_arm, &m_swerveDrive, &m_gyro).ToPtr();
-  }
+    case 4: return LeaveCommunityLeft(&m_swerveDrive, &m_gyro).ToPtr();
+    case 5: return frc2::CommandPtr{nullptr};
+  } 
+
+  return frc2::CommandPtr{nullptr};
 
 }
