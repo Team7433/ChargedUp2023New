@@ -36,6 +36,9 @@
 #include "commands/autos/TwoItemAutoRightTwo.h"
 #include "commands/autos/LeaveCommunityLeft.h"
 #include "commands/autos/OneItemEdge.h"
+#include "commands/autos/ChargeStationMidRung.h"
+#include "commands/autos/EdgeMidRung.h"
+#include "commands/autos/DeliverOne.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since

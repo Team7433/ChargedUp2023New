@@ -22,25 +22,39 @@ void BotBalance::Execute() {
   std::cout << "Roll: " << m_gyro->GetRoll().to<double>() << " ";
 
   if (m_gyro->GetRoll() < -m_threshold){
-    m_swerveDrive->Drive(units::radian_t(0), 0.35_m, 0); // do things
+    m_swerveDrive->Drive(units::radian_t(0), 0.15_m, 0); // do things
     std::cout << "moving Backward\n";
+    m_timer.Stop();
+    m_timer.Reset();
   }
    else if (m_gyro->GetRoll() > m_threshold){
-    m_swerveDrive->Drive(units::radian_t(pi), 0.35_m, 0);
+    m_swerveDrive->Drive(units::radian_t(pi), 0.15_m, 0);
     std::cout << "Moving forward\n";
-  } else {
+    m_timer.Stop();
+    m_timer.Reset();
 
-     m_swerveDrive->Drive(units::radian_t(pi/2), 0.0_m, 0);
+  } else {
+    m_timer.Start();
+    m_swerveDrive->Drive(units::radian_t(pi/2), 0.0_m, 0);
+    if(m_timer.Get() > 0.5_s) {
+      m_done = true;
+    }
   
-  }
+  } 
 }
 
 // Called once the command ends or is interrupted.
-void BotBalance::End(bool interrupted) {}
+void BotBalance::End(bool interrupted) {
+
+  m_done = false;
+  m_timer.Stop();
+  m_timer.Reset();
+
+}
 
 // Returns true when the command should end.
 bool BotBalance::IsFinished() {
-  return false; // TODO
+  return m_done; // TODO
 }
 
 

@@ -16,12 +16,13 @@ RobotContainer::RobotContainer() : m_swerveDrive(&m_gyro){
 
   // -- AUTOS --
   frc::SmartDashboard::PutData(&autoSelecter);
-  autoSelecter.AddOption("2Right", 1); // Red
-  autoSelecter.AddOption("1MidChargeStation", 2);
-  autoSelecter.AddOption("2RightB", 3); // Blue
+  autoSelecter.AddOption("ChargeStationHigh", 2);
   autoSelecter.AddOption("LeaveCommunity", 4);
   autoSelecter.AddOption("NoAuto", 5);
-  autoSelecter.AddOption("1ItemEdge", 6); 
+  autoSelecter.AddOption("EdgeHigh", 6); 
+  autoSelecter.AddOption("ChargeStationMid", 7);
+  autoSelecter.AddOption("EdgeMid", 8);
+  autoSelecter.AddOption("DeliverOne", 9);
   // -- AUTOS --
 
   ConfigureBindings();
@@ -90,6 +91,10 @@ frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
     case 3: return TwoItemAutoRightTwo(&m_arm, &m_swerveDrive, &m_gyro).ToPtr();
     case 4: return LeaveCommunityLeft(&m_swerveDrive, &m_gyro).ToPtr();
     case 5: return frc2::CommandPtr{nullptr};
+    case 6: return OneItemEdge(&m_arm, &m_swerveDrive, &m_gyro).ToPtr();
+    case 7: return ChargeStationMidRung(&m_arm, &m_swerveDrive, &m_gyro).ToPtr();
+    case 8: return EdgeMidRung(&m_arm, &m_swerveDrive, &m_gyro).ToPtr();
+    case 9: return DeliverOne(&m_arm, &m_swerveDrive, &m_gyro).ToPtr();
   } 
 
   return frc2::CommandPtr{nullptr};

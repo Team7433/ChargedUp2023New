@@ -9,7 +9,7 @@ Arm::Arm(){
 
     m_armMotorTwo->Follow(*m_armMotorOne);
 
-    m_armMotorOne->Config_kP(0, 0.3, 10);
+    m_armMotorOne->Config_kP(0, 0.29, 10);
     m_armMotorOne->Config_kI(0, 0.0, 10);
     m_armMotorOne->Config_kD(0, 0.2, 10);
 

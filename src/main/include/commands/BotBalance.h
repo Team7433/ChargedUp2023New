@@ -10,6 +10,7 @@
 #include "subsystems/SwerveDrivetrain.h"
 #include "subsystems/Gyro.h"
 #include <units/angle.h>
+#include "frc/Timer.h"
 
 /**
  * An example command.
@@ -38,9 +39,14 @@ class BotBalance
   units::radian_t closestPathError(units::radian_t error);
 
   // TODO threshold
-  units::degree_t m_threshold = 7.5_deg;
+  units::degree_t m_threshold = 10_deg;
   
   Gyro * m_gyro;
   SwerveDrivetrain * m_swerveDrive;
   double pi = 3.14159265358979323846264;
+
+  frc::Timer m_timer;
+
+  bool m_done{false};
+
 };
