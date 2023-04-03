@@ -21,7 +21,7 @@ OneItemMid::OneItemMid(Arm * m_arm, SwerveDrivetrain * m_swerveDrive, Gyro * m_g
       frc2::ParallelCommandGroup(
         frc2::SequentialCommandGroup(
         frc2::InstantCommand([this, m_arm] {m_arm->extendArm(frc::DoubleSolenoid::kReverse);}),
-        Wait(0.4_s),
+        Wait(0.65_s),
         frc2::InstantCommand([this, m_arm] {m_arm->setClaw(frc::DoubleSolenoid::kReverse);}),
         SetArmPosition(m_arm, -1000),
         frc2::InstantCommand([this, m_arm] {m_arm->freeArm();})

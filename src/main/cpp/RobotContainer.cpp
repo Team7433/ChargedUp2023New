@@ -10,8 +10,11 @@
 
 RobotContainer::RobotContainer() : m_swerveDrive(&m_gyro){
   // Initialize all of your commands and subsystems here
+
+  // Set the default command of the swerve drive to move in accordance to joystick. This will run all.
   m_swerveDrive.SetDefaultCommand(DriveWithJoystick(&m_swerveDrive, &m_driverStick));
   
+  // 
   m_arm.SetDefaultCommand(JoystickArmControl(&m_arm, &m_controller));
 
   // -- AUTOS --
@@ -29,23 +32,14 @@ RobotContainer::RobotContainer() : m_swerveDrive(&m_gyro){
 }
 
 void RobotContainer::ConfigureBindings() {
-  // Configure your trigger bindings here
-
 
   // frc2::Trigger([this] {return m_driverStick.GetRawButton(3);}).OnTrue(MoveTo(&m_swerveDrive, &m_gyro, iona::coordinate{.x_pos = 0_m, .y_pos = 0_m}, 0_deg).ToPtr());
 
+
+  // Auto charge station balance.
   frc2::Trigger([this] {
     return m_driverStick.GetRawButton(3);
   }).OnTrue(BotBalance(&m_swerveDrive, &m_gyro).ToPtr());
-
-
-
-  // frc2::Trigger([this]{
-  //   return m_driverStick.GetRawButton(1);
-  // }).OnTrue(AutoTarget(&m_swerveDrive, &m_gyro, &m_vision, &m_driverStick, &m_driverStick).ToPtr());
-
-
-
 
 
   //Swerve drive gyroscope and odometry reset.
@@ -57,6 +51,7 @@ void RobotContainer::ConfigureBindings() {
   frc2::Trigger([this] {return m_driverStick.GetRawButton(5);}).OnTrue(
     frc2::InstantCommand([this] {m_swerveDrive.ResetSwerveModules();}).ToPtr()
   );
+
   //////// CODRIVER BINDINGS /////////
 
 
@@ -65,19 +60,16 @@ void RobotContainer::ConfigureBindings() {
   m_controller.RightBumper().WhileTrue(frc2::InstantCommand([this] {m_arm.setClaw(frc::DoubleSolenoid::kReverse);}).ToPtr());
 
 
+  // Release arm from brake mode.
   m_controller.Start().WhileTrue(frc2::InstantCommand([this] {m_arm.freeArm();}).ToPtr());
-
-
-  //
-  // ---- NEW CODRIVER BINDINGS
-  //
 
 
   //Arm telescoping control.
   m_controller.A().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kReverse);}).ToPtr());
   m_controller.Y().WhileTrue(frc2::InstantCommand([this] {m_arm.extendArm(frc::DoubleSolenoid::Value::kForward);}).ToPtr());
 
-  m_controller.X().WhileTrue(SnapTo(&m_arm, &m_controller).ToPtr()); // Snap to the closest known position
+  // Correct arm to closest known position.
+  m_controller.X().WhileTrue(SnapTo(&m_arm, &m_controller).ToPtr());
 
 
 
